@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>[학생용] 아시아 인구 시뮬레이터 & 탐구 보고서</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Google Fonts for Korean -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+        }
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+        @media print {
+            .no-print {
+                display: none !important;
+            }
+            .print-area {
+                width: 100% !important;
+                max-width: 100% !important;
+                box-shadow: none !important;
+                margin: 0 !important;
+                padding: 0 !important;
+            }
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen">
+
+    <!-- Header (No Print) -->
+    <header class="bg-gradient-to-r from-teal-600 to-indigo-700 text-white shadow-lg no-print">
+        <div class="max-w-7xl mx-auto px-4 py-6 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-4">
+            <div>
+                <span class="bg-teal-500 text-xs font-bold px-2.5 py-1 rounded-full uppercase tracking-wider">중학 사회 [9사(지리)02-03] 연계</span>
+                <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight mt-2">📊 아시아 인구 탐구 학생 Portal</h1>
+                <p class="text-teal-100 text-sm mt-1">Our World in Data 실측치 분석, 인구 예측 시뮬레이션 및 보고서 제출을 수행합니다.</p>
+            </div>
+            <div class="flex gap-2">
+                <button onclick="switchTab('simulator')" id="btn-tab-sim" class="px-5 py-2.5 rounded-lg font-semibold bg-white text-indigo-700 shadow-md transition duration-200 hover:bg-slate-100">
+                    💻 실데이터 & 시뮬레이터
+                </button>
+                <button onclick="switchTab('report')" id="btn-tab-rep" class="px-5 py-2.5 rounded-lg font-semibold bg-indigo-600 text-white hover:bg-indigo-500 transition duration-200">
+                    📝 보고서 & 형성평가
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
+
+        <!-- ================= SIMULATOR TAB ================= -->
+        <section id="tab-simulator" class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+            
+            <!-- Left: Our World in Data iframe Embed (6 cols) -->
+            <div class="lg:col-span-6 bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex flex-col gap-4">
+                <div>
+                    <h2 class="text-lg font-bold text-slate-900 border-b pb-3 flex items-center gap-2">
+                        <span class="text-indigo-600">📊</span> Our World in Data 실제 합계출산율 통계
+                    </h2>
+                    <p class="text-xs text-slate-500 mt-2">전 세계 및 아시아 주요국의 연도별 합계출산율(TFR) 변화를 직접 탐색하고 수치를 비교해 보세요.</p>
+                </div>
+
+                <!-- Embeded Iframe from Our World in Data -->
+                <div class="w-full rounded-xl overflow-hidden border border-slate-200 shadow-inner bg-slate-100">
+                    <iframe src="https://ourworldindata.org/grapher/children-born-per-woman?facet=entity&uniformYAxis=0&country=RUS~IND~SWE~DNK~KEN~KOR~USA~CHN~ESP&tab=line" 
+                            loading="lazy" 
+                            style="width: 100%; height: 500px; border: 0px none;" 
+                            allow="web-share; clipboard-write"></iframe>
+                </div>
+
+                <!-- Learning Guide Box -->
+                <div class="p-4 bg-teal-50/50 rounded-xl border border-teal-100 space-y-2">
+                    <h4 class="text-xs font-bold text-teal-800">💡 학습 안내 및 팁</h4>
+                    <p class="text-xs text-slate-600 leading-relaxed">
+                        1. 위 인터랙티브 그래프에서 <strong>KOR(한국), CHN(중국), IND(인도)</strong>의 일대기적 하락 추세를 비교해 보세요.<br>
+                        2. 파악한 출생률 특성을 기반으로, 우측 시뮬레이터에 가상의 조출생률(‰) 값을 넣어 미래 50년을 추산합니다.<br>
+                        <span class="text-slate-400 text-[10px] block mt-1">※ 합계출산율(TFR) 1.0은 대략 조출생률 7‰, TFR 2.0은 대략 14‰, TFR 4.0 이상은 대략 25‰ 이상 수준으로 환산됩니다.</span>
+                    </p>
+                </div>
+            </div>
+
+            <!-- Right: Interactive Simulator (6 cols) -->
+            <div class="lg:col-span-6 flex flex-col gap-6">
+                
+                <!-- Variable Controller & Simulation Engine -->
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 space-y-6">
+                    <div class="flex justify-between items-center border-b pb-3">
+                        <div>
+                            <h2 class="text-base font-bold text-slate-900 flex items-center gap-1.5">
+                                <span class="text-teal-600">⚙️</span> 실시간 인구 예측 시뮬레이터
+                            </h2>
+                            <p class="text-xs text-slate-500 mt-1">조출생률과 조사망률 변수를 이동해 다가올 세대 인구구조 구조를 직접 확인해 보세요.</p>
+                        </div>
+                    </div>
+
+                    <!-- Preset Buttons for Easy Testing -->
+                    <div class="space-y-2">
+                        <span class="text-xs font-semibold text-slate-600 block">원클릭 아시아 지역 대표형 적용하기</span>
+                        <div class="grid grid-cols-3 gap-2">
+                            <button onclick="applySimPreset(7.5, 9.0, '동아시아형 (대한민국)')" class="py-1.5 px-2 bg-slate-100 hover:bg-slate-200 rounded text-[11px] font-bold text-slate-700 transition">📉 한국/동아시아</button>
+                            <button onclick="applySimPreset(17.5, 7.0, '남부아시아형 (인도)')" class="py-1.5 px-2 bg-slate-100 hover:bg-slate-200 rounded text-[11px] font-bold text-slate-700 transition">📈 인도/남부아시아</button>
+                            <button onclick="applySimPreset(28.0, 5.5, '서남아시아형 (사우디)')" class="py-1.5 px-2 bg-slate-100 hover:bg-slate-200 rounded text-[11px] font-bold text-slate-700 transition">🔥 서남아시아</button>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2 border-t border-slate-100">
+                        <!-- Birth Rate Control -->
+                        <div class="space-y-2">
+                            <div class="flex justify-between items-center">
+                                <label class="text-xs font-bold text-slate-700 flex items-center gap-1">
+                                    <span class="w-2.5 h-2.5 rounded-full bg-teal-500"></span> 조출생률 (Birth Rate)
+                                </label>
+                                <span class="text-[10px] text-slate-400">인구 1,000명당 출생수</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <input type="range" id="slider-birth" min="3" max="50" step="0.1" value="18" class="w-full h-1.5 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-teal-600" oninput="updateFromSlider('birth')">
+                                <input type="number" id="num-birth" min="3" max="50" step="0.1" value="18" class="w-16 text-center border border-slate-200 rounded p-1 text-xs font-bold text-slate-800" oninput="updateFromNum('birth')">
+                                <span class="text-xs font-bold text-slate-400">‰</span>
+                            </div>
+                        </div>
+
+                        <!-- Death Rate Control -->
+                        <div class="space-y-2">
+                            <div class="flex justify-between items-center">
+                                <label class="text-xs font-bold text-slate-700 flex items-center gap-1">
+                                    <span class="w-2.5 h-2.5 rounded-full bg-rose-500"></span> 조사망률 (Death Rate)
+                                </label>
+                                <span class="text-[10px] text-slate-400">인구 1,000명당 사망수</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <input type="range" id="slider-death" min="3" max="25" step="0.1" value="7" class="w-full h-1.5 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-rose-600" oninput="updateFromSlider('death')">
+                                <input type="number" id="num-death" min="3" max="25" step="0.1" value="7" class="w-16 text-center border border-slate-200 rounded p-1 text-xs font-bold text-slate-800" oninput="updateFromNum('death')">
+                                <span class="text-xs font-bold text-slate-400">‰</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Simulator Live Summary Dashboard -->
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 bg-slate-50 p-4 rounded-xl border border-slate-100">
+                        <div class="text-center">
+                            <span class="text-[10px] text-slate-400 font-bold block mb-1">50년 후 예측 인구</span>
+                            <span id="metric-future-pop" class="text-sm font-extrabold text-slate-900">-</span>
+                        </div>
+                        <div class="text-center border-t sm:border-t-0 sm:border-x border-slate-200 py-2 sm:py-0">
+                            <span class="text-[10px] text-slate-400 font-bold block mb-1">인구 구조 분류</span>
+                            <span id="metric-pyramid-type" class="text-sm font-extrabold text-indigo-700">-</span>
+                        </div>
+                        <div class="text-center">
+                            <span class="text-[10px] text-slate-400 font-bold block mb-1">자연 증가율</span>
+                            <span id="calc-growth-rate" class="text-sm font-extrabold text-teal-600">-</span>
+                        </div>
+                    </div>
+
+                    <!-- Simulated Line Graph -->
+                    <div class="h-44 relative w-full pt-1">
+                        <canvas id="chart-population-trend"></canvas>
+                    </div>
+                </div>
+
+                <!-- Demographic Pyramid and Dynamic Geopolitical Text -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    
+                    <!-- Dynamic Structure Pyramid -->
+                    <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-100 flex flex-col justify-between">
+                        <div>
+                            <h4 class="font-bold text-slate-900 text-xs mb-1">📊 연령 구조 변환 피라미드</h4>
+                            <p class="text-[11px] text-slate-400 mb-4">출생 및 사망에 따라 계산되는 유소년, 중장년, 노년층 비율입니다.</p>
+                        </div>
+                        
+                        <!-- Visual structure bars -->
+                        <div class="space-y-3 py-2">
+                            <!-- Old (65+) -->
+                            <div class="flex items-center justify-between">
+                                <span class="text-[10px] font-bold text-slate-500 w-14">노년층 (65+)</span>
+                                <div class="flex-1 px-3">
+                                    <div class="w-full bg-slate-100 rounded-full h-3 overflow-hidden flex justify-center">
+                                        <div id="pyramid-old" class="bg-violet-400 h-full transition-all duration-300" style="width: 15%;"></div>
+                                    </div>
+                                </div>
+                                <span id="lbl-pyramid-old" class="text-xs font-bold text-slate-700 w-8 text-right">15%</span>
+                            </div>
+                            <!-- Working (15-64) -->
+                            <div class="flex items-center justify-between">
+                                <span class="text-[10px] font-bold text-slate-500 w-14">중장년 (15-64)</span>
+                                <div class="flex-1 px-3">
+                                    <div class="w-full bg-slate-100 rounded-full h-3 overflow-hidden flex justify-center">
+                                        <div id="pyramid-working" class="bg-indigo-500 h-full transition-all duration-300" style="width: 65%;"></div>
+                                    </div>
+                                </div>
+                                <span id="lbl-pyramid-working" class="text-xs font-bold text-slate-700 w-8 text-right">65%</span>
+                            </div>
+                            <!-- Youth (0-14) -->
+                            <div class="flex items-center justify-between">
+                                <span class="text-[10px] font-bold text-slate-500 w-14">유소년 (0-14)</span>
+                                <div class="flex-1 px-3">
+                                    <div class="w-full bg-slate-100 rounded-full h-3 overflow-hidden flex justify-center">
+                                        <div id="pyramid-youth" class="bg-teal-400 h-full transition-all duration-300" style="width: 20%;"></div>
+                                    </div>
+                                </div>
+                                <span id="lbl-pyramid-youth" class="text-xs font-bold text-slate-700 w-8 text-right">20%</span>
+                            </div>
+                        </div>
+
+                        <div class="bg-slate-50 p-2 rounded-lg border border-slate-100 mt-4 text-center text-[11px]">
+                            총부양비: <strong id="calc-dependency-ratio" class="text-indigo-600">-</strong>
+                        </div>
+                    </div>
+
+                    <!-- Geopolitical analysis text area -->
+                    <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-100 flex flex-col justify-between">
+                        <div>
+                            <h4 class="font-bold text-slate-900 text-xs mb-2 flex items-center gap-1.5 text-indigo-700">
+                                💡 인구학적 추론 및 공간 변화 해석
+                            </h4>
+                            <p id="analysis-text" class="text-xs text-slate-600 leading-relaxed min-h-[100px]">
+                                시뮬레이션 설정에 맞춰 정밀 인구 분석 보고서가 자동으로 렌더링되는 중입니다...
+                            </p>
+                        </div>
+                        
+                        <div class="mt-4 pt-3 border-t border-slate-100">
+                            <button onclick="copyDataToReport()" class="w-full py-2 px-3 bg-teal-50 text-teal-700 rounded-xl text-xs font-bold hover:bg-teal-100 transition duration-150 flex items-center justify-center gap-1.5">
+                                📝 이 결과를 탐구 보고서에 복사하기
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </section>
+
+
+        <!-- ================= REPORT TAB (Print Optimized) ================= -->
+        <section id="tab-report" class="hidden max-w-4xl mx-auto">
+            
+            <!-- Toolbars -->
+            <div class="no-print bg-slate-800 text-white p-4 rounded-t-2xl flex flex-col sm:flex-row justify-between items-center gap-4">
+                <div class="flex items-center gap-2">
+                    <span class="text-xs font-medium text-slate-400">보고서 작성 및 제출:</span>
+                    <span class="text-xs bg-slate-700 px-2 py-1 rounded">데이터를 확인하고 내용을 기록한 뒤 맨 아래 형성평가를 풀어 최종 제출해 주세요.</span>
+                </div>
+                <div class="flex gap-2 w-full sm:w-auto">
+                    <button onclick="window.print()" class="flex-1 sm:flex-initial bg-teal-500 hover:bg-teal-600 text-white text-xs font-bold px-4 py-2 rounded-lg transition duration-150 flex items-center justify-center gap-1.5">
+                        🖨️ 인쇄 (PDF 저장)
+                    </button>
+                    <button onclick="clearReportForm()" class="flex-1 sm:flex-initial bg-slate-700 hover:bg-slate-600 text-slate-200 text-xs font-bold px-4 py-2 rounded-lg transition duration-150">
+                        🔄 작성란 초기화
+                    </button>
+                </div>
+            </div>
+
+            <!-- Paper Sheet -->
+            <div id="student-report-paper" class="print-area bg-white p-8 sm:p-12 rounded-b-2xl shadow-md border border-slate-200 text-slate-950 space-y-8">
+                
+                <!-- Title Block -->
+                <div class="text-center space-y-2 border-b-4 border-double border-slate-800 pb-6">
+                    <h2 class="text-3xl font-extrabold tracking-tight">아시아 실제 데이터 기반 인구 탐구 보고서</h2>
+                    <p class="text-sm font-medium text-slate-500">Our World in Data 지표 분석을 통한 지역 인구 변화와 공간 구조 추론</p>
+                </div>
+
+                <!-- Student Information -->
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 bg-slate-50 p-4 rounded-xl border border-slate-200">
+                    <div>
+                        <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider">학년 / 반 / 번호</label>
+                        <input type="text" id="student-class" placeholder="예: 3학년 1반 23번" class="w-full bg-transparent border-b border-slate-300 focus:border-teal-500 py-1 text-sm font-semibold outline-none text-slate-900">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider">학생 성명</label>
+                        <input type="text" id="student-name" placeholder="예: 이영희" class="w-full bg-transparent border-b border-slate-300 focus:border-teal-500 py-1 text-sm font-semibold outline-none text-slate-900">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider">탐구 및 작성일자</label>
+                        <input type="date" id="report-date" class="w-full bg-transparent border-b border-slate-300 focus:border-teal-500 py-1 text-sm font-semibold outline-none text-slate-900">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider">탐구 아시아 지역명</label>
+                        <input type="text" id="report-region-name" placeholder="예: 동아시아 (대한민국)" class="w-full bg-transparent border-b border-slate-300 focus:border-teal-500 py-1 text-sm font-semibold outline-none text-slate-900">
+                    </div>
+                </div>
+
+                <!-- Section 1 -->
+                <div class="space-y-2">
+                    <h3 class="text-sm font-extrabold border-l-4 border-slate-800 pl-2">1. Our World in Data 실측 분석 가설</h3>
+                    <textarea id="report-hypothesis" placeholder="[가설 예시] Our World in Data 통계를 분석해 본 결과, 서남아시아나 남부아시아는 합계출산율이 완만히 하락하지만 여전히 젊은 인구가 지탱하는 반면, 대한민국을 위시한 동아시아 지역은 합계출산율이 급감하여 50년 후 인구 피라미드가 역삼각형 모양의 항아리형으로 빠르게 수축할 것이다." 
+                              class="w-full h-24 p-3 border border-slate-300 rounded-lg text-xs outline-none focus:border-teal-500 focus:ring-1 focus:ring-teal-500 leading-relaxed text-slate-900 bg-white"></textarea>
+                </div>
+
+                <!-- Section 2: Simulator Raw Data (Automatically or manually filled) -->
+                <div class="space-y-3">
+                    <h3 class="text-sm font-extrabold border-l-4 border-slate-800 pl-2">2. 시뮬레이션 설정값 및 50년 후 결과값</h3>
+                    <p class="text-xs text-slate-500">실측 데이터를 통해 가상 시뮬레이터가 계산해 낸 구체적인 수치 분석표입니다.</p>
+                    
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                        <div class="p-3 border border-slate-200 rounded-lg text-center bg-slate-50">
+                            <span class="block text-[11px] font-medium text-slate-500">입력 조출생률(‰)</span>
+                            <span id="rep-val-birth" class="text-lg font-bold text-slate-800">-</span>
+                        </div>
+                        <div class="p-3 border border-slate-200 rounded-lg text-center bg-slate-50">
+                            <span class="block text-[11px] font-medium text-slate-500">지정 조사망률(‰)</span>
+                            <span id="rep-val-death" class="text-lg font-bold text-slate-800">-</span>
+                        </div>
+                        <div class="p-3 border border-slate-200 rounded-lg text-center bg-slate-50">
+                            <span class="block text-[11px] font-medium text-slate-500">연산 자연인구증가율</span>
+                            <span id="rep-val-rate" class="text-lg font-bold text-slate-800">-</span>
+                        </div>
+                        <div class="p-3 border border-slate-200 rounded-lg text-center bg-slate-50">
+                            <span class="block text-[11px] font-medium text-slate-500">50년 후 미래 인구</span>
+                            <span id="rep-val-future-pop" class="text-lg font-bold text-slate-800">-</span>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-2">
+                        <div class="p-4 border border-slate-200 rounded-lg">
+                            <span class="block text-xs font-bold text-slate-600 mb-2">세대 구조 분포 및 비율</span>
+                            <div class="space-y-1 text-xs">
+                                <div class="flex justify-between"><span>유소년층 (0~14세):</span> <strong id="rep-pct-youth">-</strong></div>
+                                <div class="flex justify-between"><span>중장년층 (15~64세):</span> <strong id="rep-pct-working">-</strong></div>
+                                <div class="flex justify-between"><span>노년층 (65세 이상):</span> <strong id="rep-pct-old">-</strong></div>
+                                <div class="flex justify-between border-t pt-1 mt-1 font-bold text-indigo-700">
+                                    <span>총부양비율:</span> <span id="rep-val-dependency">-</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="p-4 border border-slate-200 rounded-lg bg-slate-50 flex flex-col justify-between">
+                            <div>
+                                <span class="block text-xs font-bold text-slate-600">인구 변천 모형 상의 단계</span>
+                                <span id="rep-val-transition" class="text-sm font-extrabold text-slate-800 block mt-1">-</span>
+                            </div>
+                            <div class="text-[10px] text-slate-500 mt-2 leading-tight">
+                                시뮬레이터가 수치 조건들을 반영하여 판독한 변천 모형 단계입니다.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 3: Student Analysis Field -->
+                <div class="space-y-2">
+                    <h3 class="text-sm font-extrabold border-l-4 border-slate-800 pl-2">3. 아시아 대상 지역의 성장 잠재력 및 공간 구조 분석</h3>
+                    <textarea id="report-self-analysis" placeholder="[작성 안내] 선택한 국가의 역사적 출산율 그래프 변화를 해석하고, 시뮬레이션된 미래 연령 구조가 노동력 확보 및 지역 소멸 등 지역 경제 발전에 어떠한 영향을 미칠 것인지 본인의 추론을 전개하여 서술하세요." 
+                              class="w-full h-40 p-3 border border-slate-300 rounded-lg text-xs outline-none focus:border-teal-500 focus:ring-1 focus:ring-teal-500 leading-relaxed text-slate-900 bg-white"></textarea>
+                </div>
+
+                <!-- Section 4: Solution and Suggestion -->
+                <div class="space-y-2">
+                    <h3 class="text-sm font-extrabold border-l-4 border-slate-800 pl-2">4. 인구 변동 문제 극복을 위한 공간적 제언 및 정책안</h3>
+                    <textarea id="report-solution" placeholder="[작성 안내] 저출산·고령화 문제 혹은 급격한 개발도상국 인구 과밀 문제 등 조사한 지역의 지리 공간적 인구 현안을 극복하기 위해 다각적으로 필요한 조치(예: 교육 인프라 균형 배치, 외인 이민 수용, 실버 타운 공간 분산 등)를 창의적으로 제안하세요." 
+                              class="w-full h-32 p-3 border border-slate-300 rounded-lg text-xs outline-none focus:border-teal-500 focus:ring-1 focus:ring-teal-500 leading-relaxed text-slate-900 bg-white"></textarea>
+                </div>
+
+                <!-- Formative Quiz (형성평가) Area -->
+                <div class="space-y-4 pt-6 border-t border-slate-200 no-print">
+                    <div class="bg-indigo-50 p-6 rounded-xl border border-indigo-100 space-y-4">
+                        <div class="flex items-center gap-2 border-b border-indigo-200 pb-2">
+                            <span class="text-lg">🎯</span>
+                            <h3 class="text-sm font-bold text-indigo-950">아시아 인구 지리 형성평가 (수업 이수용 3문항)</h3>
+                        </div>
+
+                        <!-- Quiz 1 -->
+                        <div class="space-y-2 text-xs">
+                            <p class="font-bold text-slate-800">Q1. 합계출산율이 극도로 낮아지는 대한민국 등 동아시아의 인구 변동 특징 및 위기로 알맞지 않은 것은?</p>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-1">
+                                <label class="flex items-center gap-2 p-2 bg-white rounded border border-slate-200 hover:bg-slate-50 cursor-pointer">
+                                    <input type="radio" name="quiz1" value="1" class="text-indigo-600"> 1) 유소년 인구 비율의 지속적 감소
+                                </label>
+                                <label class="flex items-center gap-2 p-2 bg-white rounded border border-slate-200 hover:bg-slate-50 cursor-pointer">
+                                    <input type="radio" name="quiz1" value="2" class="text-indigo-600"> 2) 노인 인구 부양을 위한 청장년층 부담율 상승
+                                </label>
+                                <label class="flex items-center gap-2 p-2 bg-white rounded border border-slate-200 hover:bg-slate-50 cursor-pointer">
+                                    <input type="radio" name="quiz1" value="3" class="text-indigo-600"> 3) 학교 통폐합 및 지역 노동 공급 부족 심화
+                                </label>
+                                <label class="flex items-center gap-2 p-2 bg-white rounded border border-slate-200 hover:bg-slate-50 cursor-pointer">
+                                    <input type="radio" name="quiz1" value="4" class="text-indigo-600"> 4) 영유아 과밀화에 따른 인프라 및 교실 부족 현상 (정답)
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Quiz 2 -->
+                        <div class="space-y-2 text-xs pt-2">
+                            <p class="font-bold text-slate-800">Q2. 전체 인구 중 청장년층 비중이 높아 부양비 부담이 적고, 경제 성장에 유리하게 작용하는 인구 전환 현상을 무엇이라 하나요?</p>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-1">
+                                <label class="flex items-center gap-2 p-2 bg-white rounded border border-slate-200 hover:bg-slate-50 cursor-pointer">
+                                    <input type="radio" name="quiz2" value="1" class="text-indigo-600"> 1) 인구 부양 채무 (Demographic Debt)
+                                </label>
+                                <label class="flex items-center gap-2 p-2 bg-white rounded border border-slate-200 hover:bg-slate-50 cursor-pointer">
+                                    <input type="radio" name="quiz2" value="2" class="text-indigo-600"> 2) 인구 보너스 (Demographic Dividend) (정답)
+                                </label>
+                                <label class="flex items-center gap-2 p-2 bg-white rounded border border-slate-200 hover:bg-slate-50 cursor-pointer">
+                                    <input type="radio" name="quiz2" value="3" class="text-indigo-600"> 3) 다자녀 정체 모델
+                                </label>
+                                <label class="flex items-center gap-2 p-2 bg-white rounded border border-slate-200 hover:bg-slate-50 cursor-pointer">
+                                    <input type="radio" name="quiz2" value="4" class="text-indigo-600"> 4) 젠트리피케이션
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Quiz 3 -->
+                        <div class="space-y-2 text-xs pt-2">
+                            <p class="font-bold text-slate-800">Q3. 인구 변천 모형 중 '출생률과 사망률이 모두 최저 수준으로 낮아져 인구가 정체되거나 감소하는 선진국형 변천 단계'는 몇 단계인가요?</p>
+                            <div class="grid grid-cols-4 gap-2 mt-1">
+                                <label class="flex items-center justify-center p-2 bg-white rounded border border-slate-200 hover:bg-slate-50 cursor-pointer">
+                                    <input type="radio" name="quiz3" value="1" class="mr-1"> 1단계
+                                </label>
+                                <label class="flex items-center justify-center p-2 bg-white rounded border border-slate-200 hover:bg-slate-50 cursor-pointer">
+                                    <input type="radio" name="quiz3" value="2" class="mr-1"> 2단계
+                                </label>
+                                <label class="flex items-center justify-center p-2 bg-white rounded border border-slate-200 hover:bg-slate-50 cursor-pointer">
+                                    <input type="radio" name="quiz3" value="3" class="mr-1"> 3단계
+                                </label>
+                                <label class="flex items-center justify-center p-2 bg-white rounded border border-indigo-400 bg-indigo-50/50 cursor-pointer">
+                                    <input type="radio" name="quiz3" value="4" class="mr-1"> 4단계 (정답)
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Submit Action (No Print) -->
+                <div class="no-print pt-4 text-center">
+                    <button onclick="submitStudentReport()" class="w-full sm:w-80 py-3 bg-gradient-to-r from-teal-600 to-indigo-600 text-white font-bold rounded-xl shadow-lg hover:from-teal-700 hover:to-indigo-700 transition duration-150 transform hover:-translate-y-0.5">
+                        📥 보고서 및 평가 제출하기
+                    </button>
+                    <p class="text-xs text-slate-400 mt-2">※ 최종 제출하면 선생님의 대시보드(교사용 화면)로 데이터가 실시간 전송됩니다.</p>
+                </div>
+
+                <!-- Signature & Evaluation Box -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-6 border-t border-slate-200">
+                    <div class="text-xs text-slate-500 flex flex-col justify-end">
+                        <p>위와 같이 실측 데이터 및 시뮬레이션을 성실하게 종합 분석한 탐구 보고서를 제출합니다.</p>
+                        <p class="mt-4 font-bold text-slate-800">제출 학생: ____________________ (서명)</p>
+                    </div>
+                    <div class="p-3 border border-slate-300 rounded-lg bg-slate-50 text-xs">
+                        <span class="block text-[11px] font-extrabold text-slate-500 mb-2">교사 종합 평가란</span>
+                        <div class="flex flex-wrap gap-2 text-[10px] font-semibold text-slate-600 mb-2">
+                            <label class="flex items-center gap-1"><input type="checkbox"> 아시아 인구 특징 파악</label>
+                            <label class="flex items-center gap-1"><input type="checkbox"> 인구 구조 변환 이해</label>
+                            <label class="flex items-center gap-1"><input type="checkbox"> 논리적 공간 발전 추론</label>
+                        </div>
+                        <div class="border-t border-slate-200 pt-2 text-[11px] text-slate-400">
+                            종합 평가 등급: [ &nbsp; 상 &nbsp; / &nbsp; 중 &nbsp; / &nbsp; 하 &nbsp; ]
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Notification Toast Modal -->
+    <div id="modal-toast" class="fixed bottom-5 right-5 bg-slate-900 text-white px-6 py-3.5 rounded-xl shadow-2xl flex items-center gap-3 z-50 transform translate-y-10 opacity-0 transition duration-300 pointer-events-none">
+        <span id="toast-icon">✅</span>
+        <span id="toast-text" class="text-xs font-semibold">저장되었습니다.</span>
+    </div>
+
+    <!-- Firebase SDK Imports -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, collection, doc, setDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // Firebase Configuration (Using provided globals, or safe dummy defaults)
+        const firebaseConfig = typeof __firebase_config !== 'undefined' 
+            ? JSON.parse(__firebase_config) 
+            : {
+                apiKey: "",
+                authDomain: "asia-population-simulator.firebaseapp.com",
+                projectId: "asia-population-simulator",
+                storageBucket: "asia-population-simulator.appspot.com",
+                messagingSenderId: "12345",
+                appId: "1-12345"
+            };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'asia-pop-simulator';
+
+        let user = null;
+
+        // AUTH BEFORE QUERIES (Rule 3)
+        const initAuth = async () => {
+            try {
+                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                    await signInWithCustomToken(auth, __initial_auth_token);
+                } else {
+                    await signInAnonymously(auth);
+                }
+            } catch (err) {
+                console.error("Firebase Auth Error:", err);
+            }
+        };
+
+        initAuth();
+        onAuthStateChanged(auth, (u) => {
+            user = u;
+        });
+
+        // Expose submit logic to the DOM window
+        window.submitStudentReport = async function() {
+            if (!user) {
+                showToast("⚠️", "인증 진행 중입니다. 잠시 후 다시 제출해 주세요.");
+                return;
+            }
+
+            const name = document.getElementById('student-name').value.trim();
+            const classInfo = document.getElementById('student-class').value.trim();
+            const region = document.getElementById('report-region-name').value.trim();
+            const hypothesis = document.getElementById('report-hypothesis').value.trim();
+            const analysis = document.getElementById('report-self-analysis').value.trim();
+            const solution = document.getElementById('report-solution').value.trim();
+
+            if (!name || !classInfo) {
+                showToast("⚠️", "학번/반 정보와 이름을 입력해야 정상 제출됩니다.");
+                return;
+            }
+
+            // Grade Quizzes
+            let score = 0;
+            const q1Answer = document.querySelector('input[name="quiz1"]:checked');
+            const q2Answer = document.querySelector('input[name="quiz2"]:checked');
+            const q3Answer = document.querySelector('input[name="quiz3"]:checked');
+
+            if (!q1Answer || !q2Answer || !q3Answer) {
+                showToast("⚠️", "형성평가 3문항의 답을 선택해야 제출할 수 있습니다.");
+                return;
+            }
+
+            if (q1Answer.value === "4") score += 34; 
+            if (q2Answer.value === "2") score += 33;
+            if (q3Answer.value === "4") score += 33;
+
+            // Strict collection path implementation (Rule 1)
+            const submissionDocId = `${classInfo}_${name}_${Date.now()}`;
+            const subDocRef = doc(db, 'artifacts', appId, 'public', 'data', 'submissions', submissionDocId);
+
+            const record = {
+                id: Date.now(),
+                classInfo: classInfo,
+                name: name,
+                region: region || "미지정 아시아 국가",
+                birthRate: parseFloat(document.getElementById('num-birth').value) || 18,
+                deathRate: parseFloat(document.getElementById('num-death').value) || 7,
+                score: score,
+                hypothesis: hypothesis || "미작성",
+                analysis: analysis || "미작성",
+                solution: solution || "미작성"
+            };
+
+            try {
+                await setDoc(subDocRef, record);
+                showToast("🎓", `정상 제출되었습니다! 형성평가 점수: ${score}점`);
+                setTimeout(() => {
+                    switchTab('simulator');
+                }, 2000);
+            } catch (err) {
+                console.error("Firestore Write Error:", err);
+                showToast("❌", "서버 전송에 실패했습니다. 다시 시도해 주세요.");
+            }
+        };
+    </script>
+
+    <!-- Normal Script Block (Charts and Sliders) -->
+    <script>
+        let trendChart = null;
+        let activeTab = 'simulator';
+
+        let simData = {
+            birthRate: 18,
+            deathRate: 7,
+            initialPopulation: 100000000, 
+            years: 50,
+            simulatedYears: [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50],
+            populationOverTime: []
+        };
+
+        window.onload = function() {
+            document.getElementById('report-date').valueAsDate = new Date();
+            initTrendChart();
+            runSimulation();
+        };
+
+        function switchTab(tabId) {
+            activeTab = tabId;
+            const tabSim = document.getElementById('tab-simulator');
+            const tabRep = document.getElementById('tab-report');
+            const btnSim = document.getElementById('btn-tab-sim');
+            const btnRep = document.getElementById('btn-tab-rep');
+
+            tabSim.classList.add('hidden');
+            tabRep.classList.add('hidden');
+
+            btnSim.className = "px-5 py-2.5 rounded-lg font-semibold bg-indigo-600 text-white hover:bg-indigo-500 transition duration-200";
+            btnRep.className = "px-5 py-2.5 rounded-lg font-semibold bg-indigo-600 text-white hover:bg-indigo-500 transition duration-200";
+
+            if (tabId === 'simulator') {
+                tabSim.classList.remove('hidden');
+                btnSim.className = "px-5 py-2.5 rounded-lg font-semibold bg-white text-indigo-700 shadow-md transition duration-200 hover:bg-slate-100";
+            } else if (tabId === 'report') {
+                tabRep.classList.remove('hidden');
+                btnRep.className = "px-5 py-2.5 rounded-lg font-semibold bg-white text-indigo-700 shadow-md transition duration-200 hover:bg-slate-100";
+            }
+        }
+
+        function applySimPreset(birth, death, name) {
+            document.getElementById('slider-birth').value = birth;
+            document.getElementById('num-birth').value = birth;
+            document.getElementById('slider-death').value = death;
+            document.getElementById('num-death').value = death;
+
+            simData.birthRate = birth;
+            simData.deathRate = death;
+
+            document.getElementById('report-region-name').value = name;
+            runSimulation();
+            showToast("🎯", `${name} 기본 변수가 적용되었습니다.`);
+        }
+
+        function updateFromSlider(type) {
+            const slider = document.getElementById(`slider-${type}`);
+            const num = document.getElementById(`num-${type}`);
+            num.value = slider.value;
+            
+            if (type === 'birth') simData.birthRate = parseFloat(slider.value);
+            if (type === 'death') simData.deathRate = parseFloat(slider.value);
+
+            runSimulation();
+        }
+
+        function updateFromNum(type) {
+            const slider = document.getElementById(`slider-${type}`);
+            const num = document.getElementById(`num-${type}`);
+            
+            let val = parseFloat(num.value);
+            const min = parseFloat(num.min);
+            const max = parseFloat(num.max);
+            if (isNaN(val)) val = min;
+            if (val < min) val = min;
+            if (val > max) val = max;
+            
+            num.value = val;
+            slider.value = val;
+
+            if (type === 'birth') simData.birthRate = val;
+            if (type === 'death') simData.deathRate = val;
+
+            runSimulation();
+        }
+
+        function runSimulation() {
+            const b = simData.birthRate;
+            const d = simData.deathRate;
+
+            const growthRatePercent = (b - d) / 10;
+            const r = growthRatePercent / 100;
+
+            document.getElementById('calc-growth-rate').innerText = `${growthRatePercent >= 0 ? '+' : ''}${growthRatePercent.toFixed(2)}%`;
+
+            simData.populationOverTime = [];
+            simData.simulatedYears.forEach(year => {
+                const projectedPop = simData.initialPopulation * Math.exp(r * year);
+                simData.populationOverTime.push(Math.round(projectedPop));
+            });
+
+            const finalPop = simData.populationOverTime[simData.populationOverTime.length - 1];
+            document.getElementById('metric-future-pop').innerText = formatKoreanNumber(finalPop);
+
+            let youthShare = 20;
+            let workingShare = 65;
+            let oldShare = 15;
+
+            if (b >= 26) {
+                youthShare = Math.round(38 + (b - 26) * 0.4);
+                oldShare = Math.round(4 + (10 - d) * 0.15);
+                workingShare = 100 - youthShare - oldShare;
+            } else if (b >= 13 && b < 26) {
+                youthShare = Math.round(20 + (b - 13) * 0.9);
+                oldShare = Math.round(8 + (15 - d) * 0.6);
+                workingShare = 100 - youthShare - oldShare;
+            } else {
+                youthShare = Math.round(10 + b * 0.5);
+                oldShare = Math.round(20 + (13 - b) * 1.5);
+                workingShare = 100 - youthShare - oldShare;
+            }
+
+            document.getElementById('pyramid-youth').style.width = `${youthShare}%`;
+            document.getElementById('pyramid-working').style.width = `${workingShare}%`;
+            document.getElementById('pyramid-old').style.width = `${oldShare}%`;
+
+            document.getElementById('lbl-pyramid-youth').innerText = `${youthShare}%`;
+            document.getElementById('lbl-pyramid-working').innerText = `${workingShare}%`;
+            document.getElementById('lbl-pyramid-old').innerText = `${oldShare}%`;
+
+            const dependencyRatio = ((youthShare + oldShare) / workingShare * 100).toFixed(1);
+            document.getElementById('calc-dependency-ratio').innerText = dependencyRatio;
+
+            let pyramidType = "종형 (안정형)";
+            let stageInfo = "3단계 (감속 인구 성장기)";
+            let analysis = "";
+
+            if (b >= 26) {
+                pyramidType = "피라미드형 (인구 급증)";
+                stageInfo = "2단계 (초기 확장기)";
+                analysis = `조출생률이 <strong>${b.toFixed(1)}‰</strong>로 대단히 높습니다. 유소년 비중이 ${youthShare}%에 이르러 기초 교육 비용이 증가하지만, 미래에 거대한 경제 활동 가능 인력(인구 보너스 효과)을 예비할 기회가 높은 단계입니다.`;
+            } else if (b >= 13 && b < 26) {
+                pyramidType = "종형 (안정성숙형)";
+                stageInfo = "3단계 (감속 인구 성장기)";
+                analysis = `인구 안정기 구조입니다. 경제활동인구 비율(${workingShare}%)이 견고하고 부양 부채가 조화롭게 분포하여, 안정적인 인프라 속 제조업 및 신흥 산업 고성장에 가장 우호적인 골디락스 구간에 속합니다.`;
+            } else {
+                pyramidType = "항아리형 (초고령화 위기)";
+                stageInfo = "4단계 (인구 수축 / 저출생 정체기)";
+                analysis = `조출생률이 <strong>${b.toFixed(1)}‰</strong> 이하로 정체되며 노년 비율이 급속히 상승하는 수축 국면입니다. 생산 세대 축소로 국토 및 노동력 불균형을 야기할 수 있으며 실버 공간 재배치가 필수 과제가 됩니다.`;
+            }
+
+            document.getElementById('metric-pyramid-type').innerText = pyramidType;
+            document.getElementById('analysis-text').innerHTML = analysis;
+
+            simData.summaryObject = {
+                birth: b,
+                death: d,
+                ratePercent: growthRatePercent,
+                futurePop: finalPop,
+                youth: youthShare,
+                working: workingShare,
+                old: oldShare,
+                dependency: dependencyRatio,
+                transition: stageInfo
+            };
+
+            if (trendChart) {
+                trendChart.data.datasets[0].data = simData.populationOverTime;
+                trendChart.update();
+            }
+        }
+
+        function initTrendChart() {
+            const ctx = document.getElementById('chart-population-trend').getContext('2d');
+            trendChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: simData.simulatedYears.map(y => `기준 +${y}년`),
+                    datasets: [{
+                        label: '예측 인구 변화 (명)',
+                        borderColor: '#0d9488',
+                        backgroundColor: 'rgba(13, 148, 136, 0.08)',
+                        borderWidth: 2,
+                        pointBackgroundColor: '#0d9488',
+                        tension: 0.3,
+                        fill: true,
+                        data: []
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        y: {
+                            grid: { color: '#f1f5f9' },
+                            ticks: { callback: value => formatKoreanNumber(value) }
+                        }
+                    }
+                }
+            });
+        }
+
+        function formatKoreanNumber(num) {
+            if (num >= 100000000) {
+                return (num / 100000000).toFixed(2) + '억 명';
+            } else if (num >= 10000) {
+                return (num / 10000).toFixed(0) + '만 명';
+            }
+            return num.toLocaleString() + ' 명';
+        }
+
+        function copyDataToReport() {
+            const obj = simData.summaryObject;
+            if (!obj) return;
+
+            document.getElementById('rep-val-birth').innerText = `${obj.birth.toFixed(1)} ‰`;
+            document.getElementById('rep-val-death').innerText = `${obj.death.toFixed(1)} ‰`;
+            document.getElementById('rep-val-rate').innerText = `${obj.ratePercent >= 0 ? '+' : ''}${obj.ratePercent.toFixed(2)}%`;
+            document.getElementById('rep-val-future-pop').innerText = formatKoreanNumber(obj.futurePop);
+            
+            document.getElementById('rep-pct-youth').innerText = `${obj.youth}%`;
+            document.getElementById('rep-pct-working').innerText = `${obj.working}%`;
+            document.getElementById('rep-pct-old').innerText = `${obj.old}%`;
+            document.getElementById('rep-val-dependency').innerText = obj.dependency;
+            document.getElementById('rep-val-transition').innerText = obj.transition;
+
+            switchTab('report');
+            setTimeout(() => {
+                document.getElementById('student-report-paper').scrollIntoView({ behavior: 'smooth' });
+            }, 100);
+            showToast("📝", "실시간 인구예측 수치가 탐구 보고서 서식에 자동 연동되었습니다.");
+        }
+
+        function clearReportForm() {
+            document.getElementById('rep-val-birth').innerText = "-";
+            document.getElementById('rep-val-death').innerText = "-";
+            document.getElementById('rep-val-rate').innerText = "-";
+            document.getElementById('rep-val-future-pop').innerText = "-";
+            document.getElementById('rep-pct-youth').innerText = "-";
+            document.getElementById('rep-pct-working').innerText = "-";
+            document.getElementById('rep-pct-old').innerText = "-";
+            document.getElementById('rep-val-dependency').innerText = "-";
+            document.getElementById('rep-val-transition').innerText = "-";
+
+            const fields = ['report-hypothesis', 'report-self-analysis', 'report-solution', 'student-name', 'student-class', 'report-region-name'];
+            fields.forEach(f => document.getElementById(f).value = "");
+            
+            const radios = document.querySelectorAll('input[type="radio"]');
+            radios.forEach(r => r.checked = false);
+
+            showToast("🔄", "작성 양식 및 형성평가가 리셋되었습니다.");
+        }
+
+        function showToast(icon, text) {
+            const toast = document.getElementById('modal-toast');
+            document.getElementById('toast-icon').innerText = icon;
+            document.getElementById('toast-text').innerText = text;
+
+            toast.classList.remove('translate-y-10', 'opacity-0');
+            toast.classList.add('translate-y-0', 'opacity-100');
+
+            setTimeout(() => {
+                toast.classList.remove('translate-y-0', 'opacity-100');
+                toast.classList.add('translate-y-10', 'opacity-0');
+            }, 2800);
+        }
+    </script>
+</body>
+</html>
