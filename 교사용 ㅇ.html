@@ -26,7 +26,7 @@
             <div>
                 <span class="bg-indigo-600 text-[10px] font-extrabold px-3 py-1 rounded-full uppercase tracking-wider">MIGRATION ADMIN PLATFORM</span>
                 <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight mt-1 text-white">🔐 국제이주 탐구 실시간 관리자 콘솔</h1>
-                <p class="text-slate-400 text-xs mt-1">학생들의 다문화 분석 보고서 제출 현황과 성적을 추적하고, 구글 앱스 스크립트(GAS)를 경유하여 기재용 세특 문장을 자동 생성하고 교사가 직접 수정한 후 클라우드에 전송합니다.</p>
+                <p class="text-slate-400 text-xs mt-1 font-light">학생들의 다문화 분석 보고서 제출 현황과 성적을 추적하고, 구글 앱스 스크립트(GAS)를 경유하여 기재용 세특 문장을 자동 생성하고 교사가 직접 수정한 후 클라우드에 전송합니다.</p>
             </div>
             <div id="lock-badge" class="px-4 py-2 bg-slate-900 border border-slate-800 text-slate-400 rounded-lg text-xs font-semibold flex items-center gap-1.5">
                 <span id="lock-icon">🔒</span> <span id="lock-text">관리자 보안 잠금</span>
@@ -255,7 +255,7 @@
         // 파이어베이스 웹 콘솔에서 발급받은 'firebaseConfig' 설정 객체를 아래 괄호 안에 채워 넣으세요.
         // 설정이 완료되기 전이나 비어 있을 때는 로컬 오프라인 시뮬레이션 모드로 작동합니다.
         // =========================================================================
-const firebaseConfig = {
+  const firebaseConfig = {
   apiKey: "AIzaSyA5StiC90nMYf3UVdggXG_QtMAYEXRlvU8",
   authDomain: "hinicetomeetyou-6ef8b.firebaseapp.com",
   projectId: "hinicetomeetyou-6ef8b",
@@ -264,6 +264,7 @@ const firebaseConfig = {
   appId: "1:124161071141:web:79ddabec095af9854087cc",
   measurementId: "G-XLTK2QTC26"
 };
+
         // Firebase 연동 활성화 여부 자가 판정 필터 (Error 및 다운 현상 해결의 핵심)
         const isFirebaseConfigured = firebaseConfig && 
                                      firebaseConfig.apiKey && 
