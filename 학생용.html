@@ -92,7 +92,7 @@
                     <h4 class="text-xs font-bold text-teal-800">💡 국제이주 탐구 도움말</h4>
                     <p class="text-xs text-slate-600 leading-relaxed">
                         1. 지도의 <strong>푸른색 계열(유입국)</strong>과 <strong>붉은색 계열(유출국)</strong>의 지리적 차이를 분석합니다.<br>
-                        2. 출발국(Push)과 유입국(Pull) 간의 요인이 불균형해질 때 인구 이동 경로와 지역 내부 공간에 어떠한 불균형 및 다문화 양상이 파생될지 우측 가상 시뮬레이터로 조절하며 수치화해보세요.
+                        2. 출발국(Push)과 유입국(Pull) 간의 요인이 불균형해질 때 인구 이동 경로와 지역 내부 공간에 어떠한 불균형 및 다문화 양상이 파생되는지 관찰합니다.
                     </p>
                 </div>
             </div>
@@ -227,7 +227,7 @@
                         </div>
                         
                         <div class="mt-4 pt-3 border-t border-slate-100">
-                            <button onclick="copyDataToReport()" class="w-full py-2.5 px-3 bg-teal-50 text-teal-700 rounded-xl text-xs font-bold hover:bg-teal-100 transition duration-150 flex items-center justify-center gap-1.5">
+                            <button onclick="copyDataToReport()" class="w-full py-2.5 px-3 bg-teal-50 text-teal-700 rounded-xl text-xs font-bold hover:bg-teal-100 transition duration-150 flex items-center justify-center gap-1">
                                 📝 이 분석 결과를 탐구 보고서에 복사하기
                             </button>
                         </div>
@@ -248,7 +248,7 @@
                     <span class="text-xs bg-slate-700 px-2 py-1 rounded">지정 서식을 작성하고 맨 하단 퀴즈까지 완료하여 제출해 주세요.</span>
                 </div>
                 <div class="flex gap-2 w-full sm:w-auto">
-                    <button onclick="window.print()" class="flex-1 sm:flex-initial bg-teal-500 hover:bg-teal-600 text-white text-xs font-bold px-4 py-2 rounded-lg transition duration-150 flex items-center justify-center gap-1.5">
+                    <button onclick="window.print()" class="flex-1 sm:flex-initial bg-teal-500 hover:bg-teal-600 text-white text-xs font-bold px-4 py-2 rounded-lg transition duration-150 flex items-center justify-center gap-1">
                         🖨️ 인쇄 (PDF 저장)
                     </button>
                     <button onclick="clearReportForm()" class="flex-1 sm:flex-initial bg-slate-700 hover:bg-slate-600 text-slate-200 text-xs font-bold px-4 py-2 rounded-lg transition duration-150">
@@ -289,8 +289,8 @@
                 <!-- Section 1 -->
                 <div class="space-y-2">
                     <h3 class="text-sm font-extrabold border-l-4 border-slate-800 pl-2">1. 탐구 주제 및 지리 공간적 문제인식</h3>
-                    <textarea id="report-hypothesis" placeholder="[작성 가이드] 탐구하고자 하는 국제 이주 흐름을 지목하고, 이로 인해 발생하게 될 지리적 인구 변동 및 갈등 양상에 대한 의문점과 탐구 문제를 한눈에 작성하세요." 
-                              class="w-full h-24 p-3 border border-slate-300 rounded-lg text-xs outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 leading-relaxed text-slate-900 bg-white"></textarea>
+                    <textarea id="report-hypothesis" placeholder="[작성 가이드] 탐구하고자 하는 국제 이주 흐름을 지목하고, 이로 인해 발생하게 될 지리적 인구 변동과 공간적 불균형을 어떻게 해결할 것인지 문제를 정의합니다."
+                              class="w-full h-24 p-3 border border-slate-300 rounded-lg text-xs outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 leading-relaxed text-slate-900 bg-slate-50"></textarea>
                 </div>
 
                 <!-- Section 2: Simulator Raw Data -->
@@ -341,15 +341,15 @@
                 <!-- Section 3 -->
                 <div class="space-y-2">
                     <h3 class="text-sm font-extrabold border-l-4 border-slate-800 pl-2">3. 데이터 분석 및 다문화 이동 원인 고찰</h3>
-                    <textarea id="report-self-analysis" placeholder="[작성 가이드] 시뮬레이션 데이터를 활용하여, 특정 시점에 인구 유출과 유입이 집중되는 원인을 출발국과 유입국의 지리적 여건(기후 변화, 지정학적 충돌, 경제적 격차 등)과 유기적으로 연결해 서술하세요." 
-                              class="w-full h-40 p-3 border border-slate-300 rounded-lg text-xs outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 leading-relaxed text-slate-900 bg-white"></textarea>
+                    <textarea id="report-self-analysis" placeholder="[작성 가이드] 시뮬레이션 데이터를 활용하여, 특정 시점에 인구 유출과 유입이 집중되는 원인을 배출-흡인 모델로 분석합니다. 이주 흐름 속에서 나타나는 공간적 불균형의 지리적 의미를 기술합니다."
+                              class="w-full h-40 p-3 border border-slate-300 rounded-lg text-xs outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 leading-relaxed text-slate-900 bg-slate-50"></textarea>
                 </div>
 
                 <!-- Section 4 -->
                 <div class="space-y-2">
                     <h3 class="text-sm font-extrabold border-l-4 border-slate-800 pl-2">4. 공간적 갈등 극복 방안 및 다문화 지리 제언</h3>
-                    <textarea id="report-solution" placeholder="[작성 가이드] 이주민 밀집 구역의 슬럼화 방지, 다문화 거점 공간의 조화로운 주민 갈등 완화 대안, 이주 지원 기구 입지 재배치 등 창의적이고 현실적인 지리적 해결방안을 본인만의 시각으로 전개하세요." 
-                              class="w-full h-32 p-3 border border-slate-300 rounded-lg text-xs outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 leading-relaxed text-slate-900 bg-white"></textarea>
+                    <textarea id="report-solution" placeholder="[작성 가이드] 이주민 밀집 구역의 슬럼화 방지, 다문화 거점 공간의 조화로운 주민 갈등 완화 대안, 이주민과 토착민 간의 공생 방안을 지리적 관점에서 제시합니다."
+                              class="w-full h-32 p-3 border border-slate-300 rounded-lg text-xs outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 leading-relaxed text-slate-900 bg-slate-50"></textarea>
                 </div>
 
                 <!-- Formative Quiz Area -->
@@ -362,10 +362,10 @@
 
                         <!-- Quiz 1 -->
                         <div class="space-y-2 text-xs">
-                            <p class="font-bold text-slate-800">Q1. 국제 이주의 발생 요인 중 '출발국에서 거주지를 떠나도록 강제하는 배출 요인(Push Factors)'에 부합하지 않는 것은?</p>
+                            <p class="font-bold text-slate-800">Q1. 국제 이주의 발생 요인 중 '출발국에서 거주지를 떠나도록 강제하는 배출 요인(Push Factors)'에 부합하는 것은?</p>
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-1">
                                 <label class="flex items-center gap-2 p-2 bg-white rounded border border-slate-200 hover:bg-slate-50 cursor-pointer">
-                                    <input type="radio" name="quiz1" value="1" class="text-indigo-600"> 1) 정파적 탄압 및 내전 발생
+                                    <input type="radio" name="quiz1" value="1" class="text-indigo-600"> 1) 정치적 탄압 및 내전 발생
                                 </label>
                                 <label class="flex items-center gap-2 p-2 bg-white rounded border border-slate-200 hover:bg-slate-50 cursor-pointer">
                                     <input type="radio" name="quiz1" value="2" class="text-indigo-600"> 2) 극심한 자연재해와 토지 황폐화
@@ -381,7 +381,7 @@
 
                         <!-- Quiz 2 -->
                         <div class="space-y-2 text-xs pt-2">
-                            <p class="font-bold text-slate-800">Q2. 문화적 동화주의 모델 중 '이주민들이 자신의 독특한 문화적 정체성을 보존하면서도 공존해 나가는 통합 모형'을 가리키는 지리인류학적 은유는?</p>
+                            <p class="font-bold text-slate-800">Q2. 문화적 동화주의 모델 중 '이주민들이 자신의 독특한 문화적 정체성을 보존하면서도 공존해 나가는 모델은?</p>
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-1">
                                 <label class="flex items-center gap-2 p-2 bg-white rounded border border-slate-200 hover:bg-slate-50 cursor-pointer">
                                     <input type="radio" name="quiz2" value="1" class="text-indigo-600"> 1) 용광로 모델 (Melting Pot)
@@ -400,7 +400,7 @@
 
                         <!-- Quiz 3 -->
                         <div class="space-y-2 text-xs pt-2">
-                            <p class="font-bold text-slate-800">Q3. 이주량 결정에 있어 '두 국가의 인구 규모에 비례하고, 두 국가 간의 공간적 이격 거리에 반비례하여 이주량이 증감한다'는 고전 지리 법칙의 명칭은?</p>
+                            <p class="font-bold text-slate-800">Q3. 이주량 결정에 있어 '두 국가의 인구 규모에 비례하고, 두 국가 간의 공간적 이격 거리에 반비례한다'는 모델은?</p>
                             <div class="grid grid-cols-4 gap-2 mt-1">
                                 <label class="flex items-center justify-center p-2 bg-white rounded border border-slate-200 hover:bg-slate-50 cursor-pointer">
                                     <input type="radio" name="quiz3" value="1" class="mr-1"> 뢰슈 모형
@@ -421,7 +421,7 @@
 
                 <!-- Submit Action (No Print) -->
                 <div class="no-print pt-4 text-center">
-                    <button onclick="submitStudentReport()" class="w-full sm:w-80 py-3 bg-gradient-to-r from-teal-600 to-indigo-600 text-white font-bold rounded-xl shadow-lg hover:from-teal-700 hover:to-indigo-700 transition duration-150 transform hover:-translate-y-0.5">
+                    <button onclick="submitStudentReport()" class="w-full sm:w-80 py-3 bg-gradient-to-r from-teal-600 to-indigo-600 text-white font-bold rounded-xl shadow-lg hover:from-teal-700 hover:to-indigo-700 transition duration-200">
                         📥 보고서 및 형성평가 제출하기
                     </button>
                     <p class="text-xs text-slate-400 mt-2">※ 제출 버튼을 누르면 교사용 대시보드 관리 콘솔에 탐구 내용이 실시간으로 안전하게 연동됩니다.</p>
@@ -430,7 +430,7 @@
                 <!-- Signature & Evaluation Box -->
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-6 border-t border-slate-200">
                     <div class="text-xs text-slate-500 flex flex-col justify-end">
-                        <p>위와 같이 실측 지도 분석 및 배출-흡인 요인 시뮬레이션을 성실하게 종합 분석한 탐구 보고서를 서명 제출합니다.</p>
+                        <p>위와 같이 실측 지도 분석 및 배��-흡인 요인 시뮬레이션을 성실하게 종합 분석한 탐구 보고서를 서명 제출합니다.</p>
                         <p class="mt-4 font-bold text-slate-800">탐구 보고 학생: ____________________ (서명)</p>
                     </div>
                     <div class="p-3 border border-slate-300 rounded-lg bg-slate-50 text-xs">
@@ -500,7 +500,7 @@
     </main>
 
     <!-- Notification Toast Modal -->
-    <div id="modal-toast" class="fixed bottom-5 right-5 bg-slate-900 text-white px-6 py-3.5 rounded-xl shadow-2xl flex items-center gap-3 z-50 transform translate-y-10 opacity-0 transition duration-300 pointer-events-none">
+    <div id="modal-toast" class="fixed bottom-5 right-5 bg-slate-900 text-white px-6 py-3.5 rounded-xl shadow-2xl flex items-center gap-3 z-50 transform translate-y-10 opacity-0 transition duration-300">
         <span id="toast-icon">✅</span>
         <span id="toast-text" class="text-xs font-semibold">데이터가 처리되었습니다.</span>
     </div>
@@ -653,7 +653,7 @@
                     if (foundDoc.aiFeedback && foundDoc.aiFeedback.trim() !== "") {
                         document.getElementById('feedback-res-content').innerText = foundDoc.aiFeedback;
                     } else {
-                        document.getElementById('feedback-res-content').innerText = "선생님께서 보고서 검토 및 세특 피드백 문 작성을 대기 중입니다. 완료되면 여기에 바로 표시됩니다.";
+                        document.getElementById('feedback-res-content').innerText = "선생님께서 보고서 검토 및 세특 피드백 작성을 대기 중입니다. 완료되면 여기에 바로 표시됩니다.";
                     }
                     showToast("🔍", "매칭 기록을 찾았습니다!");
                 } else {
@@ -773,13 +773,13 @@
 
             if (refugeeShare >= 45) {
                 migTypeLabel = "인도적 피난형";
-                analysisDescription = `전쟁, 분쟁, 탄압 등 <b>강력한 출발국의 배출 압력</b>에 의해 비자발적 이주가 격화되고 있습니다. 난민 유입률(${refugeeShare}%)이 높아짐에 따라 국경 지대의 인도적 수용 긴급도가 높아지나, 사회적 동의 확보가 필수적입니다.`;
+                analysisDescription = `전쟁, 분쟁, 탄압 등 <b>강력한 출발국의 배출 압력</b>에 의해 비자발적 이주가 격화되고 있습니다. 난민 유입률(${refugeeShare}%)이 높아 국제사회의 인도적 보호 책임이 강화되며, 유입국의 문화 수용성과 사회통합 정책이 매우 중요합니다.`;
             } else if (ecoMigrantShare >= 60) {
                 migTypeLabel = "취업/경제 주도형";
-                analysisDescription = `출발국과 유입국의 <b>현격한 임금 및 고용 격차</b>가 견인 원인입니다. 젊은 노동력이 대거 이동하므로 유입국은 단기적 노동 공급난을 해소할 수 있으나, 이주민 밀집 거주 공간의 슬럼화 및 다문화 갈등을 미연에 조율할 입지 계획이 권장됩니다.`;
+                analysisDescription = `출발국과 유입국의 <b>현격한 임금 및 고용 격차</b>가 견인 원인입니다. 젊은 노동력이 대거 이동하므로 유입국은 단기적 경제 이득을 얻지만, 이주민의 사회 정착과 차별 완화 정책이 필수적입니다.`;
             } else {
                 migTypeLabel = "종합 균형형";
-                analysisDescription = `경제적 취업 이주와 인도적 요소, 그리고 기존 이주 노동자들의 연고 기반 가족재결합형 이동이 골고루 나타나고 있습니다. 전형적인 점진적 다문화 사회 이입기 단계를 나타냅니다.`;
+                analysisDescription = `경제적 취업 이주와 인도적 요소, 그리고 기존 이주 노동자들의 연고 기반 가족재결합형 이동이 골고루 나타나고 있습니다. 다양한 이주 배경을 지원하는 통합 정책과 공간적 다문화 인프라가 필요합니다.`;
             }
 
             document.getElementById('metric-mig-type').innerText = migTypeLabel;
@@ -860,6 +860,22 @@
                 document.getElementById('student-report-paper').scrollIntoView({ behavior: 'smooth' });
             }, 100);
             showToast("📝", "실시간 공간 시뮬레이션 수치가 탐구 서식지에 연계 복사되었습니다.");
+        }
+
+        function clearReportForm() {
+            document.getElementById('student-class').value = '';
+            document.getElementById('student-name').value = '';
+            document.getElementById('report-region-name').value = '';
+            document.getElementById('report-hypothesis').value = '';
+            document.getElementById('report-self-analysis').value = '';
+            document.getElementById('report-solution').value = '';
+            
+            // Clear quiz selections
+            document.querySelectorAll('input[name="quiz1"], input[name="quiz2"], input[name="quiz3"]').forEach(input => {
+                input.checked = false;
+            });
+            
+            showToast("🔄", "작성란이 모두 초기화되었습니다.");
         }
 
         function showToast(icon, text) {
