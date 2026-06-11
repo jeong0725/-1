@@ -37,7 +37,7 @@
             <div>
                 <span class="bg-indigo-600 text-[10px] font-extrabold px-3 py-1 rounded-full uppercase tracking-wider">MIGRATION ADMIN PLATFORM</span>
                 <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight mt-1 text-white">🔐 국제이주 탐구 실시간 관리자 콘솔</h1>
-                <p class="text-slate-400 text-xs mt-1">학생들의 다문화 분석 보고서 제출 현황과 성적을 추적하고, 구글 앱스 스크립트(GAS)를 경유하여 기재용 세특 문장을 자동 생성하고 교사가 직접 수정한 후 클라우드에 전송합니다.</p>
+                <p class="text-slate-400 text-xs mt-1">학생들의 다문화 분석 보고서 제출 현황과 성적을 추적하고, 구글 앱스 스크립트(GAS)를 경유하여 생활기록부 기재 내용을 AI로 자동 생성합니다.</p>
             </div>
             <div id="lock-badge" class="px-4 py-2 bg-slate-900 border border-slate-800 text-slate-400 rounded-lg text-xs font-semibold flex items-center gap-1.5">
                 <span id="lock-icon">🔒</span> <span id="lock-text">관리자 보안 잠금</span>
@@ -57,7 +57,7 @@
                 <p class="text-xs text-slate-500 mt-1">평가 관리 및 세특 작성을 위한 암호를 입력하십시오.</p>
             </div>
             <div class="space-y-2">
-                <input type="password" id="admin-password" placeholder="비밀번호(1234) 입력" class="w-full bg-slate-900 border border-slate-700 text-white rounded-xl px-4 py-3.5 text-center text-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none" value="1234">
+                <input type="password" id="admin-password" placeholder="비밀번호 입력" class="w-full bg-slate-900 border border-slate-700 text-white rounded-xl px-4 py-3.5 text-center focus:outline-none focus:border-indigo-500 transition">
                 <p id="auth-error" class="text-xs text-rose-500 hidden font-bold">⚠️ 패스워드가 다릅니다. 다시 입력해 주세요.</p>
             </div>
             <button onclick="unlockConsole()" class="w-full py-3 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-xl transition duration-150">
@@ -74,9 +74,9 @@
                     <span>⚙️</span>
                     <h3>Google Apps Script(GAS) API 허브 연동 설정</h3>
                 </div>
-                <p class="text-xs text-slate-400">구글 드라이브 앱스 스크립트에서 '웹앱으로 배포'한 뒤 획득한 배포 URL(Web App URL)을 아래에 등록하십시오. 입력값은 자동 보존됩니다.</p>
+                <p class="text-xs text-slate-400">구글 드라이브 앱스 스크립트에서 '웹앱으로 배포'한 뒤 획득한 배포 URL(Web App URL)을 아래에 등록하십시오. 입력하신 주소는 브라우저 로컬 저장소에만 저장되며 안전하게 관리됩니다.</p>
                 <div class="flex flex-col sm:flex-row gap-3">
-                    <input type="text" id="input-gas-url" placeholder="https://script.google.com/macros/s/..." class="flex-1 bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-xs text-slate-100 focus:outline-none focus:ring-1 focus:ring-indigo-500">
+                    <input type="text" id="input-gas-url" placeholder="https://script.google.com/macros/s/..." class="flex-1 bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-xs text-slate-300 focus:outline-none focus:border-indigo-500 transition">
                     <button onclick="saveGasUrlSetting()" class="px-6 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold rounded-xl transition">⚙️ 주소 저장</button>
                 </div>
             </div>
@@ -128,7 +128,7 @@
                         <h4 class="text-sm font-bold text-white mt-3">간편 시연용 데모 데이터 기능</h4>
                         <p class="text-xs text-slate-400 leading-relaxed mt-2">
                             Firebase 연동 전이거나 빠른 수업 실습 예제를 확인하고 싶으시다면 아래 '데모 데이터 다시 채우기'를 실행하세요.<br>
-                            실체 학생들이 세밀하게 분석 작성한 <strong>5개의 우수 탐구 데이터</strong>가 즉각 생성되어 테이블 및 보고서 분석, AI 세특 로드 과정을 사전 테스트할 수 있습니다.
+                            실제 학생들이 세밀하게 분석 작성한 <strong>5개의 우수 탐구 데이터</strong>가 즉각 생성되어 테이블 및 보고서 분석, AI 세특 로직 테스트에 활용됩니다.
                         </p>
                     </div>
                     <button onclick="loadDemoDataset()" class="w-full py-2.5 mt-4 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold rounded-lg transition shadow">
@@ -148,7 +148,7 @@
                         <button onclick="downloadCSV()" class="flex-1 sm:flex-initial px-4 py-2 bg-teal-500 hover:bg-teal-600 text-white text-xs font-bold rounded-lg shadow transition flex items-center justify-center gap-1.5">
                             📥 CSV 전체 백업 (Excel 완벽 연동)
                         </button>
-                        <button onclick="clearAllSubmissionsFromDB()" class="flex-1 sm:flex-initial px-4 py-2 bg-slate-900 hover:bg-slate-800 text-rose-400 text-xs font-bold rounded-lg transition border border-rose-900/30">
+                        <button onclick="clearAllSubmissionsFromDB()" class="flex-1 sm:flex-initial px-4 py-2 bg-slate-900 hover:bg-slate-800 text-rose-400 text-xs font-bold rounded-lg transition">
                             🗑️ 전체 데이터 초기화
                         </button>
                     </div>
@@ -231,8 +231,8 @@
                         <div class="p-3 bg-slate-900 rounded-xl border border-slate-800 space-y-1">
                             <h5 class="text-[10px] font-bold text-white">📋 작성 원칙 및 자동 검증 규정</h5>
                             <ul class="text-[9px] text-slate-400 list-disc pl-4 space-y-0.5 leading-normal">
-                                <li><strong>유기적 인과성</strong>: [주제] $\rightarrow$ [수치] $\rightarrow$ [원인] $\rightarrow$ [해결안] 단락화</li>
-                                <li><strong>종결 형식</strong>: 기재 표준 양식인 명사형 종결(`~함.`, `~임.`) 자동 가공</li>
+                                <li><strong>유기적 인과성</strong>: [주제] → [수치] → [원인] → [해결안] 단락화</li>
+                                <li><strong>종결 형식</strong>: 기재 표준 양식인 명사형 종결(~함., ~임.) 자동 가공</li>
                                 <li><strong>글자 수 통제</strong>: 공백 포함 <strong>450자 ~ 500자</strong> 이내 자동 조절</li>
                             </ul>
                         </div>
@@ -243,16 +243,16 @@
                                 <span>생성 및 편집 영역 (수정 시 실시간 글자수 확인 가능)</span>
                                 <span id="lbl-char-count" class="font-bold text-indigo-400">0 자</span>
                             </div>
-                            <textarea id="ai-output-box" oninput="updateCharCountLength()" class="w-full h-44 bg-slate-900 border border-slate-800 rounded-lg p-3 text-xs leading-relaxed text-slate-100 overflow-y-auto outline-none focus:ring-1 focus:ring-indigo-500 resize-none" placeholder="아래 'AI 세특 초안 생성' 버튼을 클릭하거나, 선생님께서 여기에 직접 학생 평가 문안을 자유롭게 작성 및 첨삭해 주세요."></textarea>
+                            <textarea id="ai-output-box" oninput="updateCharCountLength()" class="w-full h-44 bg-slate-900 border border-slate-800 rounded-lg p-3 text-xs leading-relaxed text-slate-300 focus:outline-none focus:border-indigo-500 transition resize-none"></textarea>
                         </div>
                     </div>
 
                     <div class="flex flex-col gap-2">
-                        <button id="btn-save-cloud" onclick="saveFeedbackToCloudDB()" class="w-full py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold rounded-lg transition shadow flex items-center justify-center gap-1.5">
+                        <button id="btn-save-cloud" onclick="saveFeedbackToCloudDB()" class="w-full py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold rounded-lg transition shadow">
                             💾 수정한 세특/피드백을 클라우드에 전송 및 저장
                         </button>
                         <div class="flex gap-2">
-                            <button id="btn-generate-ai" onclick="generateAISubmissionSeuteuk()" class="flex-1 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold rounded-lg transition shadow flex items-center justify-center gap-1.5">
+                            <button id="btn-generate-ai" onclick="generateAISubmissionSeuteuk()" class="flex-1 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold rounded-lg transition shadow">
                                 ✨ AI 세특 초안 생성 (GAS 연동)
                             </button>
                             <button onclick="copySeuteukToClipboard()" class="px-4 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold rounded-lg transition border border-slate-700">
@@ -271,7 +271,7 @@
     </div>
 
     <!-- Custom Notification Toast Modal -->
-    <div id="modal-toast" class="fixed bottom-5 right-5 bg-slate-950 text-white border border-slate-800 px-6 py-3.5 rounded-xl shadow-2xl flex items-center gap-3 z-50 transform translate-y-10 opacity-0 transition duration-300 pointer-events-none">
+    <div id="modal-toast" class="fixed bottom-5 right-5 bg-slate-950 text-white border border-slate-800 px-6 py-3.5 rounded-xl shadow-2xl flex items-center gap-3 z-50 transform translate-y-10 opacity-0 transition-all duration-300">
         <span id="toast-icon">🔐</span>
         <span id="toast-text" class="text-xs font-semibold">동작 완료</span>
     </div>
@@ -282,7 +282,7 @@
         import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, collection, onSnapshot, doc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        // Firebase Configuration
+        // Firebase Configuration - 환경 변수에서 읽어오는 것을 권장합니다
         const firebaseConfig = typeof __firebase_config !== 'undefined' 
             ? JSON.parse(__firebase_config) 
             : {
@@ -412,6 +412,9 @@
         window.activeSubmissionItem = null;
         window.isAdminUnlocked = false;
 
+        // 비밀번호는 환경 변수나 서버에서 관리하는 것을 권장합니다
+        const ADMIN_PASSWORD = "1234";
+
         // Load configured GAS Web App URL from localStorage
         window.gasWebAppUrl = localStorage.getItem('migration_gas_url') || "";
 
@@ -447,9 +450,9 @@
                 migType: "취업/경제 주도형",
                 acceptIndex: 78,
                 score: 100,
-                hypothesis: "송출국의 낮은 고용률 및 임금 부족과 한국의 급속한 고령화에 따른 단순 생산인력 공급난이 결합하여 노동 연령층의 이주가 대폭 격화될 것이다.",
-                analysis: "시뮬레이션에서 출발국 배출강도 70과 흡인강도 80을 부여할 때 연간 12,000명 이상의 노동자 전개가 예상되며 이주민 비율 역시 70%가 취업 목적으로 한정됨을 데이터로 확인함.",
-                solution: "이주 노동자가 집단 거주하는 수도권 배후 산단 근방의 주거 공간을 고도화하여 인종 슬럼화를 방지하고 지리지역 다문화 정착 커뮤니티 공간 센터를 최적의 지점에 조화롭게 배정해야 함.",
+                hypothesis: "송출국의 낮은 고용률 및 임금 부족과 한국의 급속한 고령화에 따른 단순 생산인력 공급난이 결합하여 노동 연령층의 이주가 심화됨을 파악함.",
+                analysis: "시뮬레이션에서 출발국 배출강도 70과 흡인강도 80을 부여할 때 연간 12,000명 이상의 노동자 전개가 예상되며 이주민 비율 역시 35% 내외로 추정됨.",
+                solution: "이주 노동자가 집단 거주하는 수도권 배후 산단 근방의 주거 공간을 고도화하여 인종 슬럼화를 방지하고 지역사회 통합을 도모해야 함.",
                 aiFeedback: ""
             },
             {
@@ -465,9 +468,9 @@
                 migType: "인도적 피난형",
                 acceptIndex: 42,
                 score: 100,
-                hypothesis: "중동 전쟁 및 탄압 강도의 증가로 인해 비자발적 이주 성격이 짙은 피난형 인구 이동 경로가 개척되고 유럽 유입국들의 사회통합 마찰이 커질 것으로 추정함.",
-                analysis: "시뮬레이터를 통해 내전 수치를 최대치인 95로 가중할 때 난민 점유비가 무려 62%에 도달하며 수용국 사회 수용성 지수가 최저 수준인 42점으로 폭락함을 시각적 수치로 증명함.",
-                solution: "유입 영토 경계의 인도주의적 긴급 수용 기구를 전략적 요충지에 구축하고, 사회 통합 예산을 다각화하여 특정 지구 내 국한되지 않는 권역별 난민 임시 분산 거처 설계가 정답임.",
+                hypothesis: "중동 전쟁 및 탄압 강도의 증가로 인해 비자발적 이주 성격이 짙은 피난형 인구 이동 경로가 개척되고 유럽 유입국들의 사회적 불안이 심화됨을 인식함.",
+                analysis: "시뮬레이터를 통해 내전 수치를 최대치인 95로 가중할 때 난민 점유비가 무려 62%에 도달하며 수용국 사회 수용성 지수가 최저 28% 수준으로 하락함.",
+                solution: "유입 영토 경계의 인도주의적 긴급 수용 기구를 전략적 요충지에 구축하고, 사회 통합 예산을 다각화하여 특정 지구 내 국한된 거주 편중을 완화해야 함.",
                 aiFeedback: ""
             },
             {
@@ -483,8 +486,8 @@
                 migType: "일반 협력 이주",
                 acceptIndex: 75,
                 score: 67,
-                hypothesis: "지구 온난화와 저지대 해수면 상승 압박은 거대한 기후 난민을 발생시킬 것이고 이들은 주로 인프라가 뛰어난 인접 안전국으로 향할 것이다.",
-                analysis: "농지 소실과 자연 파괴를 경제 빈곤지수 80과 연결해 대입하였을 때, 약 9천 명 이상의 실향민 전개 추세가 누적되는 시뮬레이션 데이터를 유출해 냄.",
+                hypothesis: "지구 온난화와 저지대 해수면 상승 압박은 거대한 기후 난민을 발생시킬 것이고 이들은 주로 인프라가 뛰어난 인접 안전국으로 이동할 것으로 예상함.",
+                analysis: "농지 소실과 자연 파괴를 경제 빈곤지수 80과 연결해 대입하였을 때, 약 9천 명 이상의 실향민 전개 추세가 누적되는 시뮬레이션 결과가 도출됨.",
                 solution: "다국적 지리지원 기구의 재원과 재정착 영토 공간을 기후 취약국 접경지대에 조밀 배치해 해안 공동체 붕괴를 예방해야 마땅함.",
                 aiFeedback: ""
             },
@@ -501,9 +504,9 @@
                 migType: "취업/경제 주도형",
                 acceptIndex: 68,
                 score: 100,
-                hypothesis: "중남미 국가들의 고착화된 부패 및 극빈 요인이 국경 인근 거대 흡인력을 가진 미국의 고임금 노동시장과 맞물려 지속 이주를 유발할 것이다.",
-                analysis: "출발 압박 85와 한국/미국 성격의 흡인 90 조건을 대입할 때, 총 이주 유입 예측량이 시뮬레이션 상 2만 명을 호가해 국경 순이동 지수 상승을 나타내었음.",
-                solution: "국경 단속 일변도 정책에서 벗어나, 송출국 본토에 교육 지리 투자를 확충하고 농촌 경제협력단지를 전략 입지에 지원하여 근원적 배출 압력을 경감하는 방향이 유효함.",
+                hypothesis: "중남미 국가들의 고착화된 부패 및 극빈 요인이 국경 인근 거대 흡인력을 가진 미국의 고임금 노동시장과 맞물려 지속적인 대규모 이주를 야기함.",
+                analysis: "출발 압박 85와 미국 성격의 흡인 90 조건을 대입할 때, 총 이주 유입 예측량이 시뮬레이션 상 2만 명을 호가해 국경 순이동 규모가 상당함.",
+                solution: "국경 단속 일변도 정책에서 벗어나, 송출국 본토에 교육 지리 투자를 확충하고 농촌 경제협력단지를 전략 입지에 지원하여 근본적 빈곤 완화를 추진해야 함.",
                 aiFeedback: ""
             },
             {
@@ -519,9 +522,9 @@
                 migType: "종합 균형형",
                 acceptIndex: 88,
                 score: 33,
-                hypothesis: "지식기반사회 구조 안에서 첨단 지리학 및 이공계 핵심 인력은 정서적 거리를 초월해 연구환경 및 연고 조건이 성숙한 국가로 초이동할 것임.",
-                analysis: "배출 저해요소는 20 수준으로 거의 없는 반면, 유입 조건이 95를 상회하는 상황을 부여했을 때 고부가가치 연구원들의 연간 흐름이 예측 범위 내 지속 관찰됨.",
-                solution: "테크노폴리스나 지식 클러스터 중심 공간에 다국적 영재 정착 주거 특구를 건설하고 이민 장벽 완화를 공간 구상에 반영하여 인재 흡인 구조를 만들어야 함.",
+                hypothesis: "지식기반사회 구조 안에서 첨단 지리학 및 이공계 핵심 인력은 정서적 거리를 초월해 연구환경 및 연고 조건이 성숙한 국가로 자발적 이주를 감행함.",
+                analysis: "배출 저해요소는 20 수준으로 거의 없는 반면, 유입 조건이 95를 상회하는 상황을 부여했을 때 고부가가치 연구원들의 연간 흐름이 7천 명대 규모로 추정됨.",
+                solution: "테크노폴리스나 지식 클러스터 중심 공간에 다국적 영재 정착 주거 특구를 건설하고 이민 장벽 완화를 공간 구상에 반영하여 국제 경쟁력을 강화해야 함.",
                 aiFeedback: ""
             }
         ];
@@ -530,7 +533,7 @@
             const entered = document.getElementById('admin-password').value;
             const errorLabel = document.getElementById('auth-error');
 
-            if (entered === "1234") {
+            if (entered === ADMIN_PASSWORD) {
                 errorLabel.classList.add('hidden');
                 window.isAdminUnlocked = true;
 
@@ -583,7 +586,7 @@
             tbody.innerHTML = '';
 
             if (count === 0) {
-                tbody.innerHTML = `<tr><td colspan="7" class="py-12 text-center text-slate-500 font-medium">대기 상태: 학생 페이지에서 제출 신호가 검출되지 않았습니다. <br><span class="text-xs text-slate-600 block mt-1">※ 우측 상단의 '데모 예시 자료 채워넣기'를 클릭해 테스트를 빠르게 진행해 보세요.</span></td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="7" class="py-12 text-center text-slate-500 font-medium">대기 상태: 학생 페이지에서 제출 신호가 검출되지 않았습니다. <br><strong>데모 데이터 불러오기</strong>를 사용하거나 학생 페이지 링크를 공유해주세요.</td></tr>`;
             } else {
                 list.forEach((item, index) => {
                     const tr = document.createElement('tr');
@@ -598,12 +601,12 @@
                             <span class="text-teal-400 font-semibold">Pull: ${item.pullWage || item.pullStrength || 50}</span>
                         </td>
                         <td class="py-3.5 px-6">
-                            <span class="px-2.5 py-1 rounded-md font-bold ${item.score >= 80 ? 'bg-emerald-950/60 text-emerald-400 border border-emerald-900' : item.score >= 60 ? 'bg-indigo-950/60 text-indigo-400 border border-indigo-900' : 'bg-slate-800 text-slate-400'}">
+                            <span class="px-2.5 py-1 rounded-md font-bold ${item.score >= 80 ? 'bg-emerald-950/60 text-emerald-400 border border-emerald-900' : item.score >= 60 ? 'bg-indigo-950/60 text-indigo-400 border border-indigo-900' : 'bg-rose-950/60 text-rose-400 border border-rose-900'}">
                                 ${item.score}점
                             </span>
                         </td>
                         <td class="py-3.5 px-6 text-center">
-                            <button onclick="viewStudentReportDetails(${item.id})" class="px-3 py-1.5 bg-indigo-950 text-indigo-400 font-bold rounded-lg border border-indigo-900/60 hover:bg-indigo-900 hover:text-indigo-200 transition text-[11px]">
+                            <button onclick="viewStudentReportDetails(${item.id})" class="px-3 py-1.5 bg-indigo-950 text-indigo-400 font-bold rounded-lg border border-indigo-900/60 hover:bg-indigo-900/60 transition">
                                 🔍 내용 검토 & AI 세특
                             </button>
                         </td>
@@ -687,7 +690,7 @@
             if (sub.aiFeedback && sub.aiFeedback.trim() !== "") {
                 document.getElementById('ai-output-box').value = sub.aiFeedback;
             } else {
-                document.getElementById('ai-output-box').value = "아래 'AI 세특 초안 생성' 버튼을 클릭하거나, 선생님께서 여기에 직접 학생 평가 문안을 자유롭게 작성 및 첨삭해 주세요.";
+                document.getElementById('ai-output-box').value = "아래 'AI 세특 초안 생성' 버튼을 클릭하거나, 선생님께서 여기에 직접 학생 평가 문안을 자유롭게 작성하실 수 있습니다.";
             }
             updateCharCountLength();
 
@@ -783,7 +786,7 @@
         function generateClientTemplateSeuteuk(sub) {
             const pushVal = sub.pushEco || sub.pushStrength || 50;
             const pullVal = sub.pullWage || sub.pullStrength || 50;
-            const text = `${sub.region} 환경의 공간적 갈등과 다문화 이주 구조를 문제 주제로 설정함. 시뮬레이터를 이용하여 이주 압박 강도 ${pushVal}와 흡인 강도 ${pullVal} 상태에서 연간 ${sub.totalVolume.toLocaleString()}명의 대규모 인구 전개와 수용 지수 ${sub.acceptIndex}점을 정량 분석함. 이주의 결정 원인으로 출발국의 지정학적 마찰과 노동시장 격차를 정밀하게 고찰함. 이에 따른 해결방안으로 이주민 밀집 구역의 슬럼화 방지와 지역 다문화 복합 공간 배치를 제안하는 등 창의적 해결력을 보여줌.`;
+            const text = `${sub.region} 환경의 공간적 갈등과 다문화 이주 구조를 문제 주제로 설정함. 시뮬레이터를 이용하여 이주 압박 강도 ${pushVal}와 흡인 강도 ${pullVal}의 정량적 결과를 통해 약 ${(sub.totalVolume || 0).toLocaleString()}명 규모의 이동을 예측함. ${sub.hypothesis} ${sub.analysis} ${sub.solution}`;
             return text;
         }
 
@@ -820,7 +823,7 @@
             }
 
             let csvContent = "";
-            const headers = ["번호", "학년 반 번호", "학생 성명", "지정 탐구지역", "이주 압박 강도", "인재 흡인 강도", "총이주 규모", "다문화 수용 지수", "형성평가 점수", "가설 분석", "원인 고찰", "해결 제언", "교사용 최종 세특 피드백"];
+            const headers = ["번호", "학년 반 번호", "학생 성명", "지정 탐구지역", "이주 압박 강도", "인재 흡인 강도", "총이주 규모", "다문화 수용 지수", "형성평가 점수", "분석 가설", "분석 내용", "해결 방안", "AI 세특/피드백"];
             csvContent += headers.join(",") + "\r\n";
 
             list.forEach((item, index) => {
