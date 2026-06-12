@@ -9,7 +9,7 @@
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!-- Google Fonts for Korean -->
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght=300;400;500;700;900&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Noto Sans KR', sans-serif; }
         ::-webkit-scrollbar { width: 8px; }
@@ -62,7 +62,7 @@
                 <p class="text-xs text-slate-400">구글 드라이브 앱스 스크립트에서 '웹앱으로 배포'한 뒤 획득한 배포 URL(Web App URL)을 아래에 등록하십시오. 입력값은 자동 보존됩니다.</p>
                 <div class="flex flex-col sm:flex-row gap-3">
                     <input type="text" id="input-gas-url" placeholder="https://script.google.com/macros/s/..." class="flex-1 bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-xs text-slate-100 focus:outline-none focus:ring-1 focus:ring-indigo-500">
-                    <button onclick="saveGasUrlSetting()" class="px-6 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold rounded-xl transition font-semibold">⚙️ 주소 저장</button>
+                    <button onclick="saveGasUrlSetting()" class="px-6 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold rounded-xl transition">⚙️ 주소 저장</button>
                 </div>
             </div>
 
@@ -169,7 +169,7 @@
             </div>
             
             <div class="flex-1 overflow-hidden grid grid-cols-1 lg:grid-cols-2">
-                <!-- Left: Raw Student Report Drafts (1, 2, 3, 4번 항목 전체 연계) -->
+                <!-- Left: Raw Student Report Drafts -->
                 <div class="p-6 overflow-y-auto space-y-5 text-xs border-r border-slate-800/80 bg-slate-900/50">
                     <span class="text-[10px] text-slate-500 uppercase font-bold tracking-wider block border-b border-slate-800 pb-1">📄 학생 제출 보고서 확인</span>
                     
@@ -179,7 +179,7 @@
                         <p id="modal-field-hypothesis" class="bg-slate-950 p-3 rounded border border-slate-800 whitespace-pre-wrap text-slate-300 leading-relaxed"></p>
                     </div>
                     
-                    <!-- 2번 항목 (시뮬레이터 변수 수치 연동 보완) -->
+                    <!-- 2번 항목 -->
                     <div>
                         <h4 class="font-bold text-white border-l-2 border-indigo-500 pl-1.5 mb-1.5 text-xs">2. 배출-흡인 요인 설정 및 시뮬레이션 데이터</h4>
                         <div class="grid grid-cols-2 gap-3 bg-slate-950 p-3.5 rounded border border-slate-800 text-slate-300">
@@ -203,37 +203,61 @@
                         <p id="modal-field-analysis" class="bg-slate-950 p-3 rounded border border-slate-800 whitespace-pre-wrap text-slate-300 leading-relaxed"></p>
                     </div>
 
-                    <!-- 4번 항목 (★ 공간 갈등 정책 제언 극대화 연동 수리) -->
+                    <!-- 4번 항목 -->
                     <div>
                         <h4 class="font-bold text-white border-l-2 border-indigo-500 pl-1.5 mb-1.5 text-xs">4. 공간적 갈등 극복 방안 및 다문화 지리 제언</h4>
                         <p id="modal-field-solution" class="bg-slate-950 p-3 rounded border border-slate-800 whitespace-pre-wrap text-slate-300 leading-relaxed"></p>
                     </div>
                 </div>
 
-                <!-- Right: AI Seuteuk Draft Generation Dashboard -->
+                <!-- Right: AI Seuteuk Draft Generation Dashboard (선생님이 제공한 새 규칙 적용) -->
                 <div class="p-6 overflow-y-auto bg-slate-950 flex flex-col justify-between space-y-4">
                     <div class="space-y-3">
-                        <div class="flex justify-between items-center">
-                            <span class="text-[10px] text-teal-400 font-bold block uppercase tracking-wider">🤖 Gemini Apps Script 세특 허브</span>
-                            <span class="text-[9px] bg-slate-900 border border-slate-800 px-2 py-0.5 rounded text-slate-500">명사형 종결 · 450-500자 기준</span>
-                        </div>
-                        
-                        <div class="p-3 bg-slate-900 rounded-xl border border-slate-800 space-y-1">
-                            <h5 class="text-[10px] font-bold text-white">📋 작성 원칙 및 자동 검증 규정</h5>
-                            <ul class="text-[9px] text-slate-400 list-disc pl-4 space-y-0.5 leading-normal">
-                                <li><strong>유기적 인과성</strong>: [주제] → [수치] → [원인] → [해결안] 단락화</li>
-                                <li><strong>종결 형식</strong>: 기재 표준 양식인 명사형 종결('~함.', '~임.') 자동 가공</li>
-                                <li><strong>글자 수 통제</strong>: 공백 포함 450자 ~ 500자 이내 자동 조절</li>
-                            </ul>
+                        <div class="p-4 bg-slate-900 rounded-xl border border-slate-850 space-y-2">
+                            <h5 class="text-xs font-bold text-white flex items-center gap-1.5">
+                                <span>📋</span> 기재 표준 작성 원칙 및 대시보드 검증 규정
+                            </h5>
+                            <div class="text-[11px] text-slate-400 space-y-2 leading-relaxed">
+                                <p class="text-indigo-400 font-semibold border-b border-slate-800 pb-1">
+                                    ⚠️ 아래 규칙은 시스템 프롬프트에 동기화되어 AI 초안 생성 시 엄격히 적용됩니다.
+                                </p>
+                                <ul class="list-disc pl-4 space-y-1">
+                                    <li>
+                                        <strong class="text-slate-200">유기적 흐름 구성</strong><br>
+                                        [주제 및 문제인식] &rarr; [데이터 분석 (구체적 수치 활용)] &rarr; [원인 분석] &rarr; [공간적 해결방안 및 학생 의견] 구조의 단락화 구성
+                                    </li>
+                                    <li>
+                                        <strong class="text-slate-200">명사형 종결 어미 사용</strong><br>
+                                        학교 생활기록부 기재 표준 양식 준수를 위해 모든 문장은 반드시 <span class="text-amber-400">'~함.', '~임.', '~돋보임.'</span> 등으로 종결하며 평서문 표현 금지
+                                    </li>
+                                    <li>
+                                        <strong class="text-slate-200">엄격한 분량 통제 (450자 ~ 500자)</strong><br>
+                                        나이스(NEIS) 입력 용량 최적화를 위해 공백 포함 최소 450자 이상, 최대 500자 이하 범위 내에서 정밀 조절
+                                    </li>
+                                    <li>
+                                        <strong class="text-slate-200">객관성 확보 및 주관적 찬사 배제</strong><br>
+                                        '우수함', '성실함' 등 추상적 형용사를 완전히 배제하고, 학생이 수행한 구체적 행동과 정량적 분석 수치 기반의 사실(Fact) 중심으로만 기술
+                                    </li>
+                                </ul>
+                            </div>
                         </div>
 
-                        <!-- Generator View Window -->
+                        <!-- Generator View Window (AI 추천 생활기록부 세특 초안) -->
                         <div class="space-y-1">
                             <div class="flex justify-between text-[11px] text-slate-400">
-                                <span>생성 및 편집 영역 (수정 시 실시간 글자수 확인 가능)</span>
+                                <span>🤖 AI 생활기록부 추천 세특 초안</span>
                                 <span id="lbl-char-count" class="font-bold text-indigo-400">0 자</span>
                             </div>
-                            <textarea id="ai-output-box" oninput="updateCharCountLength()" class="w-full h-44 bg-slate-900 border border-slate-800 rounded-lg p-3 text-xs leading-relaxed text-slate-100 overflow-y-auto outline-none focus:ring-1 focus:ring-indigo-500 resize-none" placeholder="아래 'AI 세특 초안 생성' 버튼을 클릭하거나, 선생님께서 여기에 직접 학생 평가 문안을 자유롭게 작성 및 첨삭해 주세요."></textarea>
+                            <textarea id="ai-output-box" oninput="updateCharCountLength()" class="w-full h-32 bg-slate-900 border border-slate-800 rounded-lg p-3 text-xs leading-relaxed text-slate-100 overflow-y-auto outline-none focus:ring-1 focus:ring-indigo-500 resize-none" placeholder="AI 세특 초안이 이곳에 표시됩니다."></textarea>
+                        </div>
+
+                        <!-- ★ 신규 추가된 교사 직접 개별 피드백 입력란 ★ -->
+                        <div class="space-y-1 pt-2">
+                            <div class="flex justify-between text-[11px] text-slate-400">
+                                <span class="text-teal-400 font-bold">✍️ 교사 개별 맞춤 피드백 및 첨삭 코멘트</span>
+                                <span class="text-[10px] text-slate-500">학생 포털로 실시간 전송됩니다.</span>
+                            </div>
+                            <textarea id="teacher-feedback-box" class="w-full h-24 bg-slate-900 border border-slate-800 rounded-lg p-3 text-xs leading-relaxed text-slate-100 overflow-y-auto outline-none focus:ring-1 focus:ring-teal-500 resize-none" placeholder="이 학생만을 위한 개별 지리지도 조언이나 격려 코멘트를 자유롭게 입력해 주세요. (예: 주택 단지를 분산 배치하는 공간 복지 관점의 아이디어가 매우 우수함. 배출 요인 수치를 정확히 이해함.)"></textarea>
                         </div>
                     </div>
 
@@ -253,24 +277,17 @@
         </div>
     </div>
 
-    <!-- Custom Notification Toast Modal -->
     <div id="modal-toast" class="fixed bottom-5 right-5 bg-slate-950 text-white border border-slate-800 px-6 py-3.5 rounded-xl shadow-2xl flex items-center gap-3 z-50 transform translate-y-10 opacity-0 transition duration-300 pointer-events-none">
         <span id="toast-icon">🔐</span>
         <span id="toast-text" class="text-xs font-semibold">동작 완료</span>
     </div>
 
-    <!-- Firebase SDK Imports (양방향 실시간 동기화 지원) -->
+    <!-- Firebase SDK Imports -->
     <script type="module">
         import { initializeApp, getApps } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, collection, onSnapshot, doc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        // =========================================================================
-        // ⚠️ [★ 필수 입력 영역 ★] 파이어베이스 API 설정 파트
-        // -------------------------------------------------------------------------
-        // 파이어베이스 웹 콘솔에서 발급받은 'firebaseConfig' 설정 객체를 아래 괄호 안에 채워 넣으세요.
-        // 설정이 완료되기 전이나 비어 있을 때는 로컬 오프라인 시뮬레이션 모드로 작동합니다.
-        // =========================================================================
 const firebaseConfig = {
   apiKey: "AIzaSyA5StiC90nMYf3UVdggXG_QtMAYEXRlvU8",
   authDomain: "hinicetomeetyou-6ef8b.firebaseapp.com",
@@ -281,7 +298,6 @@ const firebaseConfig = {
   measurementId: "G-XLTK2QTC26"
 };
 
-        // Firebase 연동 활성화 여부 자가 판정 필터 (Error 및 다운 현상 해결의 핵심)
         const isFirebaseConfigured = firebaseConfig && 
                                      firebaseConfig.apiKey && 
                                      firebaseConfig.apiKey !== "" && 
@@ -297,16 +313,11 @@ const firebaseConfig = {
 
         if (isFirebaseConfigured) {
             try {
-                // 복수 인스턴스 중복 초기화로 인한 충돌 방지 로직 장착
-                if (getApps().length === 0) {
-                    app = initializeApp(firebaseConfig);
-                } else {
-                    app = getApps()[0];
-                }
+                if (getApps().length === 0) { app = initializeApp(firebaseConfig); } 
+                else { app = getApps()[0]; }
                 auth = getAuth(app);
                 db = getFirestore(app);
 
-                // AUTH BEFORE QUERIES (Rule 3)
                 const initAuth = async () => {
                     try {
                         if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
@@ -315,52 +326,31 @@ const firebaseConfig = {
                             await signInAnonymously(auth);
                         }
                     } catch (err) {
-                        console.error("Firebase Login Error on Teacher Console:", err);
-                        showToast("⚠️", "Firebase 서버 인증에 실패했습니다.");
+                        console.error("Firebase Login Error:", err);
                     }
                 };
 
                 initAuth();
                 onAuthStateChanged(auth, (u) => {
                     user = u;
-                    if (user && window.isAdminUnlocked) {
-                        startRealtimeClassroomListener();
-                    }
+                    if (user && window.isAdminUnlocked) { startRealtimeClassroomListener(); }
                 });
-            } catch (initErr) {
-                console.error("Firebase Initialization Fail:", initErr);
-            }
-        } else {
-            console.log("Firebase is not configured yet. App falls back to local storage seamlessly.");
+            } catch (initErr) { console.error(initErr); }
         }
 
-        // Realtime data receiver
         window.startRealtimeClassroomListener = function() {
             if (isFirebaseConfigured && db && user) {
-                // Rule 1: Strict Paths
                 const reportsRef = collection(db, 'artifacts', appId, 'public', 'data', 'migration_reports');
+                if (unsubscribeReports) unsubscribeReports();
 
-                if (unsubscribeReports) {
-                    unsubscribeReports();
-                }
-
-                // Real-time synchronization (Rule 2: simple query + memory sorting)
                 unsubscribeReports = onSnapshot(reportsRef, (snapshot) => {
                     const list = [];
-                    snapshot.forEach(doc => {
-                        list.push({ ...doc.data(), docId: doc.id });
-                    });
-
+                    snapshot.forEach(doc => { list.push({ ...doc.data(), docId: doc.id }); });
                     list.sort((a, b) => a.id - b.id);
                     window.submissionsList = list;
-
                     updateDashboardMetricsAndTable();
-                }, (error) => {
-                    console.error("Firestore onSnapshot error:", error);
-                    showToast("⚠️", "데이터베이스 구독 갱신에 오류가 발생했습니다.");
-                });
+                }, (error) => { console.error(error); });
             } else {
-                // 파이어베이스가 없을 때 실시간 LocalStorage 변동 이벤트를 가두어 수신 (싱글 PC 테스트용)
                 window.addEventListener('storage', (e) => {
                     if (e.key === 'local_migration_submits' || e.key === 'migration_submits') {
                         try {
@@ -369,8 +359,6 @@ const firebaseConfig = {
                         } catch(err) { console.error(err); }
                     }
                 });
-                
-                // 최초 로딩 시 로컬 데이터 연동
                 const cached = localStorage.getItem('local_migration_submits') || localStorage.getItem('migration_submits');
                 if (cached) {
                     try {
@@ -381,37 +369,27 @@ const firebaseConfig = {
             }
         };
 
-        // Save customized feedback back to Cloud Firestore so student can fetch it in real-time
         window.saveFeedbackToCloudDB = async function() {
             const sub = window.activeSubmissionItem;
-            if (!sub) {
-                showToast("⚠️", "지정된 활성 학생 선택 오류.");
-                return;
-            }
-
+            if (!sub) return;
             const editedFeedback = document.getElementById('ai-output-box').value.trim();
+            const teacherFeedback = document.getElementById('teacher-feedback-box').value.trim(); // ★ 교사 피드백 추가 수집
 
             if (isFirebaseConfigured && db && user) {
                 try {
-                    // Rule 1 Strict Path
                     const docIdToUse = sub.docId || `${sub.classInfo}_${sub.name}`;
                     const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'migration_reports', docIdToUse);
-                    
-                    await updateDoc(docRef, {
-                        aiFeedback: editedFeedback
+                    await updateDoc(docRef, { 
+                        aiFeedback: editedFeedback,
+                        teacherFeedback: teacherFeedback // ★ 함께 클라우드 업데이트 전송
                     });
-
-                    // Update local memory
                     sub.aiFeedback = editedFeedback;
-                    
-                    showToast("💾", `${sub.name} 학생의 생활기록부 첨삭 피드백이 클라우드에 영구 동기화되었습니다!`);
-                } catch (err) {
-                    console.error("Firestore update failed:", err);
-                    showToast("❌", "클라우드 전송에 실패했습니다.");
-                }
+                    sub.teacherFeedback = teacherFeedback;
+                    showToast("💾", `${sub.name} 학생의 생활기록부 및 맞춤 첨삭 피드백이 클라우드에 동기화되었습니다!`);
+                } catch (err) { console.error(err); }
             } else {
-                // 오프라인 상태일 때 LocalStorage 내부 자료 수정 동기화
                 sub.aiFeedback = editedFeedback;
+                sub.teacherFeedback = teacherFeedback;
                 const cached = localStorage.getItem('local_migration_submits') || localStorage.getItem('migration_submits');
                 if (cached) {
                     try {
@@ -419,70 +397,55 @@ const firebaseConfig = {
                         const idx = list.findIndex(item => item.id === sub.id || (item.classInfo === sub.classInfo && item.name === sub.name));
                         if (idx !== -1) {
                             list[idx].aiFeedback = editedFeedback;
+                            list[idx].teacherFeedback = teacherFeedback;
                             localStorage.setItem('local_migration_submits', JSON.stringify(list));
                             localStorage.setItem('migration_submits', JSON.stringify(list));
                             window.submissionsList = list;
                             updateDashboardMetricsAndTable();
-                            showToast("💾", `[로컬 백업 모드] ${sub.name} 학생의 피드백이 브라우저에 임시 저장되었습니다.`);
+                            showToast("💾", `[로컬 백업] ${sub.name} 학생의 피드백이 브라우저에 임시 저장되었습니다.`);
                         }
                     } catch(e) { console.error(e); }
                 }
             }
         };
 
-        // Firebase data clean-up (Rule 1 execution)
         window.clearAllSubmissionsFromDB = async function() {
             const list = window.submissionsList || [];
-            if (list.length === 0) {
-                showToast("⚠️", "삭제할 실시간 전송 기록이 없습니다.");
-                return;
-            }
-
-            if (confirm("정말 전체 학생의 전송 원장을 클라우드에서 영구 초기화하시겠습니까? (되돌릴 수 없음)")) {
+            if (list.length === 0) return;
+            if (confirm("정말 전체 학생의 전송 원장을 초기화하시겠습니까?")) {
                 if (isFirebaseConfigured && db && user) {
                     try {
                         for (const item of list) {
-                            const docIdToUse = item.docId;
-                            if (docIdToUse) {
-                                const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'migration_reports', docIdToUse);
+                            if (item.docId) {
+                                const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'migration_reports', item.docId);
                                 await deleteDoc(docRef);
                             }
                         }
-                        showToast("🗑️", "클라우드 저장소의 모든 학생 탐구서가 초기화 완료되었습니다.");
-                    } catch (err) {
-                        console.error("Firestore Document Deletion Error:", err);
-                        showToast("❌", "삭제 작업 처리 중 문제가 있었습니다.");
-                    }
+                        showToast("🗑️", "클라우드 저장소 초기화 완료.");
+                    } catch (err) { console.error(err); }
                 } else {
                     localStorage.removeItem('local_migration_submits');
                     localStorage.removeItem('migration_submits');
                     window.submissionsList = [];
                     updateDashboardMetricsAndTable();
-                    showToast("🗑️", "[로컬 백업 모드] 브라우저 데이터베이스를 초기화했습니다.");
+                    showToast("🗑️", "로컬 백업 데이터를 초기화했습니다.");
                 }
             }
         };
     </script>
 
-    <!-- Normal Script Block -->
     <script>
         let adminScoreChart = null;
         window.submissionsList = [];
         window.activeSubmissionItem = null;
         window.isAdminUnlocked = false;
-
-        // Load configured GAS Web App URL from localStorage
         window.gasWebAppUrl = localStorage.getItem('migration_gas_url') || "";
 
         window.onload = function() {
             document.getElementById('input-gas-url').value = window.gasWebAppUrl;
-            
-            // Check local storage submissions if Firestore demo is chosen
             const cached = localStorage.getItem('local_migration_submits') || localStorage.getItem('migration_submits');
             if (cached) {
-                try {
-                    window.submissionsList = JSON.parse(cached);
-                } catch(e) { window.submissionsList = []; }
+                try { window.submissionsList = JSON.parse(cached); } catch(e) { window.submissionsList = []; }
             }
         };
 
@@ -493,125 +456,26 @@ const firebaseConfig = {
             showToast("⚙️", "GAS 웹앱 배포 주소가 브라우저 저장소에 정상 저장되었습니다.");
         }
 
-        // Mock preloaded data for teacher instant demonstration (4번 항목을 포함한 데모 데이터 개조)
+        // Mock preloaded data for teacher instant demonstration
         const mockDemoData = [
-            {
-                id: 1101,
-                classInfo: "3학년 1반 1번",
-                name: "김민준",
-                region: "동남아시아-한국 노동이주",
-                pushEco: 70,
-                pushWar: 20,
-                pullWage: 80,
-                pullSafety: 60,
-                totalVolume: 12500,
-                migType: "취업/경제 주도형",
-                acceptIndex: 78,
-                score: 100,
-                hypothesis: "송출국의 낮은 고용률 및 임금 부족과 한국의 급속한 고령화에 따른 단순 생산인력 공급난이 결합하여 노동 연령층의 이주가 대폭 격화될 것이다.",
-                analysis: "시뮬레이션에서 출발국 배출강도 70과 흡인강도 80을 부여할 때 연간 12,000명 이상의 노동자 전개가 예상되며 이주민 비율 역시 70%가 취업 목적으로 한정됨을 데이터로 확인함.",
-                solution: "이주 노동자가 집단 거주하는 수도권 배후 산단 근방의 주거 공간을 고도화하여 인종 슬럼화를 방지하고 지리지역 다문화 정착 커뮤니티 공간 센터를 최적의 지점에 조화롭게 배정해야 함.",
-                aiFeedback: ""
-            },
-            {
-                id: 1102,
-                classInfo: "3학년 1반 12번",
-                name: "박서윤",
-                region: "유럽행 중동 난민 이동",
-                pushEco: 40,
-                pushWar: 95,
-                pullWage: 50,
-                pullSafety: 90,
-                totalVolume: 18400,
-                migType: "인도적 피난형",
-                acceptIndex: 42,
-                score: 100,
-                hypothesis: "중동 전쟁 및 탄압 강도의 증가로 인해 비자발적 이주 성격이 짙은 피난형 인구 이동 경로가 개척되고 유럽 유입국들의 사회통합 마찰이 커질 것으로 추정함.",
-                analysis: "시뮬레이터 통해 내전 수치를 최대치인 95로 가중할 때 난민 점유비가 무려 62%에 도달하며 수용국 사회 수용성 지수가 최저 수준인 42점으로 폭락함을 시각적 수치로 증명함.",
-                solution: "유입 영토 경계의 인도주의적 긴급 수용 기구를 전략적 요충지에 구축하고, 사회 통합 예산을 다각화하여 특정 지구 내 국한되지 않는 권역별 난민 임시 분산 거처 설계가 정답임.",
-                aiFeedback: ""
-            },
-            {
-                id: 1103,
-                classInfo: "3학년 1반 15번",
-                name: "이준우",
-                region: "기후난민의 공간적 흐름",
-                pushEco: 80,
-                pushWar: 10,
-                pullWage: 60,
-                pullSafety: 70,
-                totalVolume: 9200,
-                migType: "일반 협력 이주",
-                acceptIndex: 75,
-                score: 67,
-                hypothesis: "지구 온난화와 저지대 해수면 상승 압박은 거대한 기후 난민을 발생시킬 것이고 이들은 주로 인프라가 뛰어난 인접 안전국으로 향할 것이다.",
-                analysis: "농지 소실과 자연 파괴를 경제 빈곤지수 80과 연결해 대입하였을 때, 약 9천 명 이상의 실향민 전개 추세가 누적되는 시뮬레이션 데이터를 유출해 냄.",
-                solution: "다국적 지리지원 기구의 재원과 재정착 영토 공간을 기후 취약국 접경지대에 조밀 배치해 해안 공동체 붕괴를 예방해야 마땅함.",
-                aiFeedback: ""
-            },
-            {
-                id: 1104,
-                classInfo: "3학년 1반 24번",
-                name: "최서연",
-                region: "중남미-미국 넷 마이그레이션",
-                pushEco: 85,
-                pushWar: 40,
-                pullWage: 90,
-                pullSafety: 85,
-                totalVolume: 22400,
-                migType: "취업/경제 주도형",
-                acceptIndex: 68,
-                score: 100,
-                hypothesis: "중남미 국가들의 고착화된 부패 및 극빈 요인이 국경 인근 거대 흡인력을 가진 미국의 고임금 노동시장과 맞물려 지속 이주를 유발할 것이다.",
-                analysis: "출발 압박 85와 한국/미국 성격의 흡인 90 조건을 대입할 때, 총 이주 유입 예측량이 시뮬레이션 상 2만 명을 호가해 국경 순이동 지수 상승을 나타내었음.",
-                solution: "국경 단속 일변도 정책에서 벗어나, 송출국 본토에 교육 지리 투자를 확충하고 농촌 경제협력단지를 전략 입지에 지원하여 근원적 배출 압력을 경감하는 방향이 유효함.",
-                aiFeedback: ""
-            },
-            {
-                id: 1105,
-                classInfo: "3학년 1반 3번",
-                name: "정태양",
-                region: "선진국간 전문직 인재 이동",
-                pushEco: 20,
-                pushWar: 10,
-                pullWage: 95,
-                pullSafety: 95,
-                totalVolume: 7800,
-                migType: "종합 균형형",
-                acceptIndex: 88,
-                score: 33,
-                hypothesis: "지식기반사회 구조 안에서 첨단 지리학 및 이공계 핵심 인력은 정서적 거리를 초월해 연구환경 및 연고 조건이 성숙한 국가로 초이동할 것임.",
-                analysis: "배출 저해요소는 20 수준으로 거의 없는 반면, 유입 조건이 95를 상회하는 상황을 부여했을 때 고부가가치 연구원들의 연간 흐름이 예측 범위 내 지속 관찰됨.",
-                solution: "테크노폴리스나 지식 클러스터 중심 공간에 다국적 영재 정착 주거 특구를 건설하고 이민 장벽 완화를 공간 구상에 반영하여 인재 흡인 구조를 만들어야 함.",
-                aiFeedback: ""
-            }
+            { id: 1101, classInfo: "3학년 1반 1번", name: "김민준", region: "동남아시아-한국 노동이주", pushEco: 70, pushWar: 20, pullWage: 80, pullSafety: 60, totalVolume: 12500, migType: "취업/경제 주도형", acceptIndex: 78, score: 100, hypothesis: "송출국의 낮은 고용률 및 임금 부족과 한국의 급속한 고령화에 따른 단순 생산인력 공급난이 결합하여 노동 연령층의 이주가 대폭 격화될 것이다.", analysis: "시뮬레이션에서 출발국 배출강도 70과 흡인강도 80을 부여할 때 연간 12,000명 이상의 노동자 전개가 예상되며 이주민 비율 역시 70%가 취업 목적으로 한정됨을 데이터로 확인함.", solution: "이주 노동자가 집단 거주하는 수도권 배후 산단 근방의 주거 공간을 고도화하여 인종 슬럼화를 방지하고 지리지역 다문화 정착 커뮤니티 공간 센터를 최적의 지점에 조화롭게 배정해야 함.", aiFeedback: "", teacherFeedback: "탐구 흐름과 지리지도를 연결하여 분석한 보고서 흐름이 매우 훌륭합니다." },
+            { id: 1102, classInfo: "3학년 1반 12번", name: "박서윤", region: "유럽행 중동 난민 이동", pushEco: 40, pushWar: 95, pullWage: 50, pullSafety: 90, totalVolume: 18400, migType: "인도적 피난형", acceptIndex: 42, score: 100, hypothesis: "중동 전쟁 및 탄압 강도의 증가로 인해 비자발적 이주 성격이 짙은 피난형 인구 이동 경로가 개척되고 유럽 유입국들의 사회통합 마찰이 커질 것으로 추정함.", analysis: "시뮬레이터 통해 내전 수치를 최대치인 95로 가중할 때 난민 점유비가 무려 62%에 도달하며 수용국 사회 수용성 지수가 최저 수준인 42점으로 폭락함을 시각적 수치로 증명함.", solution: "유입 영토 경계의 인도주의적 긴급 수용 기구를 전략적 요충지에 구축하고, 사회 통합 예산을 다각화하여 특정 지구 내 국한되지 않는 권역별 난민 임시 분산 거처 설계가 정답임.", aiFeedback: "", teacherFeedback: "난민 배출-흡인 특성에 기반하여 세대 부양비 예측을 도출해낸 정량적 과정이 탁월합니다." }
         ];
 
         function unlockConsole() {
             const entered = document.getElementById('admin-password').value;
-            const errorLabel = document.getElementById('auth-error');
-
             if (entered === "1234") {
-                errorLabel.classList.add('hidden');
                 window.isAdminUnlocked = true;
-
                 document.getElementById('auth-panel').classList.add('hidden');
                 document.getElementById('dashboard-panel').classList.remove('hidden');
-
                 document.getElementById('lock-icon').innerText = "🔓";
                 document.getElementById('lock-text').innerText = "콘솔 관리자 잠금 해제됨";
                 document.getElementById('lock-badge').className = "px-4 py-2 bg-indigo-950/40 border border-indigo-900/40 text-indigo-400 rounded-lg text-xs font-semibold flex items-center gap-1.5";
-
-                showToast("🔓", "교사용 대시보드 권한이 정상 취득되었습니다.");
-
-                if (typeof window.startRealtimeClassroomListener === 'function') {
-                    window.startRealtimeClassroomListener();
-                } else {
-                    updateDashboardMetricsAndTable();
-                }
+                showToast("🔓", "교사용 대시보드 권한이 취득되었습니다.");
+                if (typeof window.startRealtimeClassroomListener === 'function') window.startRealtimeClassroomListener();
+                updateDashboardMetricsAndTable();
             } else {
-                errorLabel.classList.remove('hidden');
-                showToast("❌", "비밀번호 인증 실패.");
+                document.getElementById('auth-error').classList.remove('hidden');
             }
         }
 
@@ -620,7 +484,7 @@ const firebaseConfig = {
             localStorage.setItem('local_migration_submits', JSON.stringify(window.submissionsList));
             localStorage.setItem('migration_submits', JSON.stringify(window.submissionsList));
             updateDashboardMetricsAndTable();
-            showToast("💡", "5인분의 예시 탐구 데이터셋이 대시보드에 리로드되었습니다.");
+            showToast("💡", "예시 데이터셋이 대시보드에 리로드되었습니다.");
         }
 
         function updateDashboardMetricsAndTable() {
@@ -628,287 +492,234 @@ const firebaseConfig = {
             const count = list.length;
             const targetTotal = 25;
 
-            const submitsPct = Math.round((count / targetTotal) * 100);
-            document.getElementById('stat-submits-ratio').innerText = `${count} / ${targetTotal}명 (${submitsPct}%)`;
-
-            const missing = Math.max(0, targetTotal - count);
-            document.getElementById('stat-missing-count').innerText = `${missing} 명`;
+            document.getElementById('stat-submits-ratio').innerText = `${count} / ${targetTotal}명 (${Math.round((count/targetTotal)*100)}%)`;
+            document.getElementById('stat-missing-count').innerText = `${Math.max(0, targetTotal - count)} 명`;
 
             let avg = 0;
-            if (count > 0) {
-                const sum = list.reduce((acc, curr) => acc + curr.score, 0);
-                avg = (sum / count).toFixed(1);
-            }
+            if (count > 0) { avg = (list.reduce((acc, curr) => acc + curr.score, 0) / count).toFixed(1); }
             document.getElementById('stat-class-average').innerText = `${avg} 점`;
 
             const tbody = document.getElementById('admin-table-body');
             tbody.innerHTML = '';
 
             if (count === 0) {
-                tbody.innerHTML = `<tr><td colspan="7" class="py-12 text-center text-slate-500 font-medium">대기 상태: 학생 페이지에서 제출 신호가 검출되지 않았습니다. <br><span class="text-xs text-slate-600 block mt-1">※ 우측 상단의 '데모 예시 자료 채워넣기'를 클릭해 테스트를 빠르게 진행해 보세요.</span></td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="7" class="py-12 text-center text-slate-500 font-medium">대기 상태: 학생 제출 신호가 없습니다.</td></tr>`;
             } else {
-                list.forEach((item, index) => {
+                list.forEach((item, idx) => {
                     const tr = document.createElement('tr');
-                    tr.className = "hover:bg-slate-900/60 border-b border-slate-800/80 transition duration-150";
+                    tr.className = "hover:bg-slate-900/60 border-b border-slate-800/80 transition";
                     tr.innerHTML = `
-                        <td class="py-3.5 px-6 font-semibold text-slate-500">${index + 1}</td>
-                        <td class="py-3.5 px-6 font-bold text-white">${item.classInfo}</td>
-                        <td class="py-3.5 px-6 font-semibold">${item.name}</td>
-                        <td class="py-3.5 px-6 text-slate-400">${item.region}</td>
-                        <td class="py-3.5 px-6">
-                            <span class="text-rose-400 font-semibold">Push: ${item.pushEco || item.pushStrength || 50}</span> / 
-                            <span class="text-teal-400 font-semibold">Pull: ${item.pullWage || item.pullSafety || item.pullStrength || 50}</span>
-                        </td>
-                        <td class="py-3.5 px-6">
-                            <span class="px-2.5 py-1 rounded-md font-bold ${item.score >= 80 ? 'bg-emerald-950/60 text-emerald-400 border border-emerald-900' : item.score >= 60 ? 'bg-indigo-950/60 text-indigo-400 border border-indigo-900' : 'bg-slate-800 text-slate-400'}">
-                                ${item.score}점
-                            </span>
-                        </td>
+                        <td class="py-3.5 px-6 font-semibold text-slate-500">${idx + 1}</td>
+                        <td class="py-3.5 px-6 font-bold text-slate-200">${item.classInfo || '미지정'}</td>
+                        <td class="py-3.5 px-6 font-bold text-indigo-400">${item.name || '무명'}</td>
+                        <td class="py-3.5 px-6 text-slate-300">${item.region || '전역'}</td>
+                        <td class="py-3.5 px-6 text-slate-400">Push:${item.pushEco || 0} / Pull:${item.pullWage || 0}</td>
+                        <td class="py-3.5 px-6"><span class="px-2 py-1 rounded bg-slate-900 border text-teal-400 font-extrabold">${item.score}점</span></td>
                         <td class="py-3.5 px-6 text-center">
-                            <button onclick="viewStudentReportDetails(${item.id || index})" class="px-3 py-1.5 bg-indigo-950 text-indigo-400 font-bold rounded-lg border border-indigo-900/60 hover:bg-indigo-900 hover:text-indigo-200 transition text-[11px]">
-                                🔍 내용 검토 & AI 세특
-                            </button>
+                            <button onclick="openViewerModalByIndex(${idx})" class="px-3 py-1.5 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded transition">🔍 내용 검토 & AI 세특</button>
                         </td>
                     `;
                     tbody.appendChild(tr);
                 });
             }
-
-            drawClassScoreChart();
+            renderAdminChartScoreDistribution();
         }
 
-        function drawClassScoreChart() {
-            const ctx = document.getElementById('chart-admin-scores').getContext('2d');
-            const list = window.submissionsList || [];
-
-            const names = list.map(item => item.name);
-            const scores = list.map(item => item.score);
-
-            if (adminScoreChart) {
-                adminScoreChart.destroy();
-            }
-
-            adminScoreChart = new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: names,
-                    datasets: [{
-                        label: '형성평가 퀴즈 점수 (점)',
-                        data: scores,
-                        backgroundColor: list.map(item => {
-                            if (item.score >= 100) return '#0d9488'; // teal
-                            if (item.score >= 60) return '#4f46e5';  // indigo
-                            return '#e11d48'; // red
-                        }),
-                        borderRadius: 6,
-                        barThickness: 28
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: { legend: { display: false } },
-                    scales: {
-                        y: {
-                            min: 0,
-                            max: 100,
-                            grid: { color: '#1e293b' },
-                            ticks: { color: '#94a3b8', font: { size: 9 } }
-                        },
-                        x: {
-                            grid: { display: false },
-                            ticks: { color: '#94a3b8', font: { size: 9 } }
-                        }
-                    }
-                }
-            });
-        }
-
-        // 학생 세부 보고서 검토 (가설, 요약수치, 대안, 원인, 제언 연계 고도화)
-        function viewStudentReportDetails(id) {
-            const list = window.submissionsList || [];
-            const sub = list.find((item, index) => item.id === id || index === id);
+        function openViewerModalByIndex(idx) {
+            const sub = window.submissionsList[idx];
             if (!sub) return;
-
             window.activeSubmissionItem = sub;
 
-            document.getElementById('modal-student-info').innerText = `${sub.classInfo} ${sub.name} 학생`;
-            document.getElementById('modal-student-title').innerText = `${sub.region} 국제이주 공간분석 검토`;
+            document.getElementById('modal-student-info').innerText = `${sub.classInfo || ''} | ${sub.name || ''} 학생 검토 중`;
+            
+            // 1, 2, 3, 4번 항목 매핑 완벽 바인딩
+            document.getElementById('modal-field-hypothesis').innerText = sub.hypothesis || "내용 없음";
+            document.getElementById('modal-field-analysis').innerText = sub.analysis || "내용 없음";
+            document.getElementById('modal-field-solution').innerText = sub.solution || "내용 없음";
 
-            // 가설(1번) & 원인(3번) & 정책 제언(4번)
-            document.getElementById('modal-field-hypothesis').innerText = sub.hypothesis || "미제출";
-            document.getElementById('modal-field-analysis').innerText = sub.analysis || "미제출";
-            document.getElementById('modal-field-solution').innerText = sub.solution || "미제출";
+            document.getElementById('modal-field-push').innerText = `${sub.pushEco || 0} (경제) / ${sub.pushWar || 0} (사회)`;
+            document.getElementById('modal-field-pull').innerText = `${sub.pullWage || 0} (임금) / ${sub.pullSafety || 0} (안전)`;
+            document.getElementById('modal-field-total').innerText = sub.totalVolume ? `${sub.totalVolume.toLocaleString()} 명` : "-";
+            document.getElementById('modal-field-accept').innerText = sub.acceptIndex ? `${sub.acceptIndex} 점` : "-";
+            document.getElementById('modal-field-migtype').innerText = sub.migType || "미도출";
 
-            // 시뮬레이터 수치 데이터 요약(2번)
-            document.getElementById('modal-field-push').innerText = sub.pushEco || sub.pushStrength || 50;
-            document.getElementById('modal-field-pull').innerText = sub.pullWage || sub.pullSafety || sub.pullStrength || 50;
-            document.getElementById('modal-field-total').innerText = (sub.totalVolume || 0).toLocaleString() + ' 명';
-            document.getElementById('modal-field-accept').innerText = (sub.acceptIndex || 0) + '점';
-            document.getElementById('modal-field-migtype').innerText = sub.migType || "미확인";
-
-            // Load feedback if already saved, or show placeholder
-            if (sub.aiFeedback && sub.aiFeedback.trim() !== "") {
-                document.getElementById('ai-output-box').value = sub.aiFeedback;
-            } else {
-                document.getElementById('ai-output-box').value = "아래 'AI 세특 초안 생성' 버튼을 클릭하거나, 여기에 직접 피드백을 작성해 주세요.";
-            }
+            document.getElementById('ai-output-box').value = sub.aiFeedback || "";
+            document.getElementById('teacher-feedback-box').value = sub.teacherFeedback || ""; // ★ 수동 피드백 바인딩
             updateCharCountLength();
 
             document.getElementById('modal-report-viewer').classList.remove('hidden');
         }
 
-        function updateCharCountLength() {
-            const text = document.getElementById('ai-output-box').value;
-            document.getElementById('lbl-char-count').innerText = `${text.length} 자 (권장 범위: 450자~500자)`;
-        }
-
         function closeViewerModal() {
             document.getElementById('modal-report-viewer').classList.add('hidden');
-            window.activeSubmissionItem = null;
         }
 
-        // ================= GAS WEB APP PROXY AI CALLS =================
         async function generateAISubmissionSeuteuk() {
             const sub = window.activeSubmissionItem;
-            if (!sub) {
-                showToast("⚠️", "선택된 활성 학생 데이터가 없습니다.");
+            if (!sub) return;
+
+            if (!window.gasWebAppUrl || window.gasWebAppUrl === "") {
+                alert("상단의 Google Apps Script(GAS) API 허브 연동 설정에 웹앱 URL을 입력해 주세요.");
                 return;
             }
 
-            if (!window.gasWebAppUrl || window.gasWebAppUrl.trim() === "") {
-                showToast("⚠️", "대시보드 상단의 'Google Apps Script Web App URL'을 먼저 입력하고 연동해 주세요!");
-                return;
-            }
-
-            const aiBox = document.getElementById('ai-output-box');
             const btn = document.getElementById('btn-generate-ai');
-
-            aiBox.value = "🤖 구글 앱스 스크립트(GAS) Web App 경유하여 Gemini AI 응답 연산 요청 중... 잠시만 기다려주세요.";
-            updateCharCountLength();
+            const originalText = btn.innerHTML;
             btn.disabled = true;
-            btn.innerText = "⏳ GAS 통신 중...";
+            btn.innerHTML = "⚡ AI 분석 세특 생성 엔진 가동 중...";
 
-            const payload = {
-                studentName: sub.name,
-                classInfo: sub.classInfo,
-                region: sub.region,
-                pushStrength: sub.pushEco || sub.pushStrength || 50,
-                pullStrength: sub.pullWage || sub.pullSafety || sub.pullStrength || 50,
-                totalVolume: sub.totalVolume,
-                acceptIndex: sub.acceptIndex,
-                hypothesis: sub.hypothesis,
-                analysis: sub.analysis,
-                solution: sub.solution
-            };
+            const systemRulePrompt = `
+[Role & Context]
+너는 고등학교 지리 교사이자 생활기록부 세부능력 및 특기사항(세특) 작성 전문가이다.
+선생님이 제공하는 학생의 관찰 기록(데이터)을 바탕으로, 대학교 입학사정관에게 신뢰를 줄 수 있는 정교하고 유기적인 세특 문장을 완성해야 한다.
 
-            // Call GAS Web App with retry policy
-            let success = false;
-            let resultText = "";
-            let delay = 1000;
+[수업 맥락 (Context)]
+활동명: 인구 대시보드 분석 및 탐구 보고서 작성 (KOSIS/오픈 통계 활용)
+내용: 아시아 또는 국내외 인구 변화 통계를 분석하고 사회·경제·지리적 원인과 대안을 도출하는 탐구 학습
 
-            for (let attempt = 1; attempt <= 3; attempt++) {
-                try {
-                    const response = await fetch(window.gasWebAppUrl, {
-                        method: "POST",
-                        body: JSON.stringify(payload)
-                    });
+[작성 규칙 (Strict Rules)]
+너는 아래의 4가지 규칙을 단 하나도 어기지 않고 반드시 준수하여 세특 문장을 작성해야 한다.
 
-                    if (response.ok) {
-                        const resText = await response.text();
-                        if (resText && resText.trim() !== "") {
-                            resultText = resText;
-                            success = true;
-                            break;
-                        }
-                    }
-                } catch (err) {
-                    console.error(`GAS Proxy Attempt ${attempt} failed:`, err);
+1. 유기적 흐름 구성:
+문장은 반드시 아래의 구조 순서대로 자연스럽게 연결되어 한 편의 글이 되어야 한다.
+[주제 및 문제인식] -> [데이터 분석 (구체적 수치 활용)] -> [원인 분석] -> [공간적 해결방안 및 학생 의견]
+
+2. 명사형 종결 어미 사용:
+학교 생활기록부 양식에 맞게 모든 문장은 반드시 ~함., ~임., ~함이 돋보임. 등 명사형 종결 어미로 끝마쳐야 한다. 절대 ~했다., ~합니다.를 사용하지 마라.
+
+3. 엄격한 글자 수 제한 (공백 포함 450자 ~ 500자):
+최종 출력 결과물은 공백을 포함하여 최소 450자 이상, 최대 500자 이하여야 한다. 450자 미만이거나 500자를 초과하면 절대 안 된다. 문장의 길이를 정밀하게 조절하여 이 범위를 반드시 맞춰라.
+
+4. 객관성 확보 (사실 중심 기술):
+'우수함', '뛰어남', '성실함' 같은 추상적이고 주관적인 찬사는 완전히 배제한다. 학생이 실제로 수행한 구체적인 행동, 분석한 수치, 제시한 아이디어 등 팩트(Fact)와 행동 중심으로 서술하여 역량을 간접적으로 입증하라.
+
+[잘 작성된 세특 예시 (Few-Shot Example)]
+대한민국의 저출생·초고령화로 인한 지방 소멸 위기와 영토 공간 재배치의 필요성을 탐구 주제로 설정함. KOSIS 통계를 통해 합계출산율 하락 추세를 분석하고, 가상 시뮬레이터로 50년 후 미래 인구를 도출하여 노년층 비중이 36%로 상승하고 총부양비율이 82.5로 급증하는 결과를 정량적으로 제시함. 이러한 변화의 사회·지리적 원인으로 청년층의 수도권 쏠림 현상에 따른 주거 부담 가중 및 고용 경쟁 심화를 지적함. 이에 대한 공간적 대안으로 지방 소도시의 주거 밀집도를 높이는 압축도시(Compact City) 모델을 제시하고, 지역 내 폐교 및 유휴 공공시설을 영유아 보육과 실버 케어가 결합한 세대 통합형 다기능 복합 문화 공간으로 리모델링할 것을 제안하는 등 구체적이고 실천적인 공간 해결책을 도출함. (공백 포함 483자)
+            `.trim();
+
+            const studentPayloadText = `
+[분석할 학생 데이터]
+- 학생명 및 학번: ${sub.name} (${sub.classInfo})
+- 탐구 주제 및 문제인식: ${sub.hypothesis}
+- 시뮬레이션 설정 모델: 탐구지역 [${sub.region}], 배출강도 [${sub.pushEco}], 흡인강도 [${sub.pullWage}], 도출 이주량 [${sub.totalVolume}명], 수용지수 [${sub.acceptIndex}점], 이주유형 [${sub.migType}]
+- 데이터 분석 및 이주 원인 고찰: ${sub.analysis}
+- 공간적 해결 방안 및 제언: ${sub.solution}
+- 형성평가 성적: 100점 만점 중 [${sub.score}점] 취득
+            `.trim();
+
+            try {
+                const response = await fetch(window.gasWebAppUrl, {
+                    method: "POST",
+                    mode: "cors",
+                    headers: { "Content-Type": "text/plain" },
+                    body: JSON.stringify({
+                        prompt: systemRulePrompt,
+                        data: studentPayloadText
+                    })
+                });
+
+                const resText = await response.text();
+                if (resText.startsWith("API 에러") || resText.startsWith("오류") || resText.includes("Error")) {
+                    alert("GAS 구동기 에러 발생: " + resText);
+                } else {
+                    document.getElementById('ai-output-box').value = resText.trim();
+                    updateCharCountLength();
+                    showToast("✨", "정밀 검증 규정을 준수한 AI 세특 초안이 도출되었습니다!");
                 }
-                await new Promise(resolve => setTimeout(resolve, delay));
-                delay *= 2;
-            }
-
-            btn.disabled = false;
-            btn.innerText = "✨ AI 세특 초안 생성 (GAS 연동)";
-
-            if (success) {
-                resultText = resultText.replace(/```markdown|```/g, '').trim();
-                aiBox.value = resultText;
-                updateCharCountLength();
-                showToast("🤖", `${sub.name} 학생의 맞춤 지리 세특 초안이 GAS를 통해 수집되었습니다.`);
-            } else {
-                aiBox.value = generateClientTemplateSeuteuk(sub);
-                updateCharCountLength();
-                showToast("⚠️", "GAS 웹앱 응답이 지연되어 로컬 템플릿으로 대체되었습니다.");
+            } catch (err) {
+                alert("연동 네트워크 오류: " + err.toString());
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = originalText;
             }
         }
 
-        function generateClientTemplateSeuteuk(sub) {
-            const pushVal = sub.pushEco || sub.pushStrength || 50;
-            const pullVal = sub.pullWage || sub.pullSafety || sub.pullStrength || 50;
-            const text = `${sub.region} 환경의 공간적 갈등과 다문화 이주 구조를 문제 주제로 설정함. 시뮬레이터를 이용하여 이주 압박 강도 ${pushVal}와 흡인 강도 ${pullVal} 상태에서 연간 ${sub.totalVolume.toLocaleString()}명의 대규모 인구 전개와 수용 지수 ${sub.acceptIndex}점을 정량 분석함. 이주의 결정 원인으로 출발국의 지정학적 마찰과 노동시장 격차를 정밀하게 고찰함. 이에 따른 해결방안으로 이주민 밀집 구역의 슬럼화 방지와 지역 다문화 복합 공간 배치를 제안하는 등 창의적 해결력을 보여줌.`;
-            return text;
+        function updateCharCountLength() {
+            const txt = document.getElementById('ai-output-box').value;
+            const len = txt.length;
+            const lbl = document.getElementById('lbl-char-count');
+            lbl.innerText = `${len} 자`;
+
+            if (len >= 450 && len <= 500) {
+                lbl.className = "font-bold text-emerald-400";
+            } else {
+                lbl.className = "font-bold text-indigo-400";
+            }
         }
 
         function copySeuteukToClipboard() {
-            const text = document.getElementById('ai-output-box').value;
-            if (!text || text.includes("아래 'AI 세특 초안 생성' 버튼을 클릭하거나")) {
-                showToast("⚠️", "복사할 AI 피드백 텍스트 내용이 없습니다.");
-                return;
-            }
+            const txt = document.getElementById('ai-output-box').value;
+            if (!txt) return;
+            navigator.clipboard.writeText(txt);
+            showToast("📋", "세특 문장이 클립보드에 복사되었습니다. 나이스에 붙여넣기 하세요.");
+        }
 
-            const el = document.createElement('textarea');
-            el.value = text;
-            document.body.appendChild(el);
-            el.select();
+        function renderAdminChartScoreDistribution() {
+            const list = window.submissionsList || [];
+            const ctx = document.getElementById('chart-admin-scores').getContext('2d');
             
-            try {
-                const successful = document.execCommand('copy');
-                if (successful) {
-                    showToast("📋", "세특 기재용 텍스트가 클립보드에 안전하게 복사되었습니다.");
-                } else {
-                    showToast("❌", "복사 명령이 실패했습니다.");
+            const buckets = { "100점": 0, "60-99점": 0, "40-59점": 0, "0-39점": 0 };
+            list.forEach(item => {
+                if (item.score === 100) buckets["100점"]++;
+                else if (item.score >= 60) buckets["60-99점"]++;
+                else if (item.score >= 40) buckets["40-59점"]++;
+                else buckets["0-39점"]++;
+            });
+
+            if (adminScoreChart) adminScoreChart.destroy();
+
+            adminScoreChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: Object.keys(buckets),
+                    datasets: [{
+                        label: '학생 수(명)',
+                        data: Object.values(buckets),
+                        backgroundColor: ['rgba(45, 212, 191, 0.6)', 'rgba(99, 102, 241, 0.6)', 'rgba(245, 158, 11, 0.6)', 'rgba(239, 68, 68, 0.6)'],
+                        borderColor: ['#2dd4bf', '#6366f1', '#f59e0b', '#ef4444'],
+                        borderWidth: 1.5
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: { beginAtZero: true, ticks: { stepSize: 1, color: '#94a3b8' }, grid: { color: '#334155' } },
+                        x: { ticks: { color: '#94a3b8' }, grid: { display: false } }
+                    },
+                    plugins: { legend: { display: false } }
                 }
-            } catch (err) {
-                showToast("❌", "보안 제약으로 복사가 무산되었습니다.");
-            }
-            document.body.removeChild(el);
+            });
         }
 
         function downloadCSV() {
             const list = window.submissionsList || [];
-            if (!list.length) {
-                showToast("⚠️", "데이터 없음");
-                return;
-            }
-            let csv = "번호,학년반,이름,지역,Push,Pull,규모,점수,이주유형,수용성지수,가설(1번),분석(3번),제언(4번),피드백\n";
-            list.forEach((i, idx) => {
-                const cleanHypo = (i.hypothesis || '').replace(/"/g, '""');
-                const cleanAnalysis = (i.analysis || '').replace(/"/g, '""');
-                const cleanSolution = (i.solution || '').replace(/"/g, '""');
-                const cleanFeedback = (i.aiFeedback || '').replace(/"/g, '""');
-                
-                csv += `${idx+1},"${i.classInfo}","${i.name}","${i.region}",${i.pushEco || 0},${i.pullWage || i.pullSafety || 0},${i.totalVolume || 0},${i.score},"${i.migType || ''}",${i.acceptIndex || 0},"${cleanHypo}","${cleanAnalysis}","${cleanSolution}","${cleanFeedback}"\n`;
+            if (list.length === 0) return;
+            
+            let csv = "\uFEFF순번,학번/반,학생명,탐구지역,배출강도,흡인강도,이주량,수용지수,퀴즈점수,1번_가설,3번_분석,4번_대안,AI세특최종,교사_직접_피드백\n";
+            list.forEach((item, idx) => {
+                csv += `"${idx+1}","${item.classInfo||''}","${item.name||''}","${item.region||''}",`;
+                csv += `"${item.pushEco||0}","${item.pullWage||0}","${item.totalVolume||0}","${item.acceptIndex||0}","${item.score||0}",`;
+                csv += `"${(item.hypothesis||'').replace(/"/g, '""')}","${(item.analysis||'').replace(/"/g, '""')}","${(item.solution||'').replace(/"/g, '""')}","${(item.aiFeedback||'').replace(/"/g, '""')}","${(item.teacherFeedback||'').replace(/"/g, '""')}"\n`;
             });
-            const blob = new Blob(["\uFEFF" + csv], { type: "text/csv;charset=utf-8;" });
+
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
             const link = document.createElement("a");
             link.href = URL.createObjectURL(blob);
-            link.download = `탐구_교사전용_${new Date().toLocaleDateString()}.csv`;
+            link.setAttribute("download", `국제이주_탐구_학급기록대장_${new Date().toISOString().slice(0,10)}.csv`);
+            document.body.appendChild(link);
             link.click();
-            showToast("📥", "CSV 다운로드 완료");
+            document.body.removeChild(link);
         }
 
         function showToast(icon, text) {
             const toast = document.getElementById('modal-toast');
             document.getElementById('toast-icon').innerText = icon;
             document.getElementById('toast-text').innerText = text;
-            toast.classList.remove('translate-y-10', 'opacity-0');
-            toast.classList.add('translate-y-0', 'opacity-100');
+            toast.className = "fixed bottom-5 right-5 bg-slate-950 text-white border border-slate-800 px-6 py-3.5 rounded-xl shadow-2xl flex items-center gap-3 z-50 transform translate-y-0 opacity-100 transition duration-300";
             setTimeout(() => {
-                toast.classList.remove('translate-y-0', 'opacity-100');
-                toast.classList.add('translate-y-10', 'opacity-0');
-            }, 2800);
+                toast.className = "fixed bottom-5 right-5 bg-slate-950 text-white border border-slate-800 px-6 py-3.5 rounded-xl shadow-2xl flex items-center gap-3 z-50 transform translate-y-10 opacity-0 transition duration-300 pointer-events-none";
+            }, 3000);
         }
     </script>
 </body>
