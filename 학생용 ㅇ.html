@@ -358,7 +358,7 @@
                               class="w-full h-36 p-3 border border-slate-300 rounded-lg text-xs outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 leading-relaxed text-slate-900 bg-white"></textarea>
                 </div>
 
-                <!-- Formative Quiz Area (★ 정답 힌트 라벨 제거 완료) -->
+                <!-- Formative Quiz Area -->
                 <div class="space-y-4 pt-6 border-t border-slate-200 no-print">
                     <div class="bg-indigo-50 p-6 rounded-xl border border-indigo-100 space-y-4">
                         <div class="flex items-center gap-2 border-b border-indigo-200 pb-2">
@@ -493,10 +493,19 @@
                         </div>
                     </div>
 
+                    <!-- AI 생활기록부 추천안 -->
                     <div class="space-y-2">
-                        <h4 class="text-xs font-extrabold text-slate-900 border-l-4 border-indigo-600 pl-2">👨‍🏫 교사 첨삭 및 맞춤 세특 피드백</h4>
+                        <h4 class="text-xs font-extrabold text-slate-900 border-l-4 border-indigo-600 pl-2">🤖 AI 생활기록부 추천 세특 초안</h4>
                         <div id="feedback-res-content" class="bg-indigo-50/50 p-4 rounded-xl border border-indigo-100 text-xs leading-relaxed text-slate-700 whitespace-pre-wrap min-h-[80px]">
-                            아직 작성된 피드백이 없습니다. 선생님께서 대시보드에서 세특 생성을 완료한 후 전송하셔야 표시됩니다.
+                            선생님께서 보고서 검토 및 세특 피드백 문 작성을 대기 중입니다. 완료되면 여기에 바로 표시됩니다.
+                        </div>
+                    </div>
+
+                    <!-- 교사 개별 맞춤 피드백 (★ 신규 연동 추가) -->
+                    <div class="space-y-2 pt-2">
+                        <h4 class="text-xs font-extrabold text-slate-900 border-l-4 border-teal-600 pl-2">👨‍🏫 선생님이 직접 남기신 첨삭 및 조언</h4>
+                        <div id="feedback-res-teacher-content" class="bg-teal-50/30 p-4 rounded-xl border border-teal-100 text-xs leading-relaxed text-slate-700 whitespace-pre-wrap min-h-[80px]">
+                            선생님의 개별 맞춤 조언이 대기 중입니다.
                         </div>
                     </div>
                 </div>
@@ -517,12 +526,7 @@
         import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, doc, setDoc, getDocs, collection } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        // =========================================================================
-        // ⚠️ [★ 연동 안내 ★] 
-        // 아래 'apiKey' 부분에 실제 파이어베이스 설정값을 복사해 넣으시면 실시간 연동이 가동됩니다.
-        // 키를 넣지 않고 그대로 비워두시면 오류 없이 "싱글 PC 로컬 연습 모드"로 자동 작동합니다!
-        // =========================================================================
-        const firebaseConfig = {
+const firebaseConfig = {
   apiKey: "AIzaSyA5StiC90nMYf3UVdggXG_QtMAYEXRlvU8",
   authDomain: "hinicetomeetyou-6ef8b.firebaseapp.com",
   projectId: "hinicetomeetyou-6ef8b",
@@ -532,7 +536,6 @@
   measurementId: "G-XLTK2QTC26"
 };
 
-        // Firebase 연동 활성화 여부 자가 판정 필터 (Error 방지의 핵심)
         const isFirebaseConfigured = firebaseConfig && 
                                      firebaseConfig.apiKey && 
                                      firebaseConfig.apiKey !== "" && 
@@ -555,7 +558,6 @@
                 auth = getAuth(app);
                 db = getFirestore(app);
 
-                // AUTH BEFORE QUERIES (Rule 3)
                 const initAuth = async () => {
                     try {
                         if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
@@ -576,17 +578,13 @@
             } catch (initErr) {
                 console.error("Firebase Initialization Fail:", initErr);
             }
-        } else {
-            console.log("Firebase is not configured yet. App falls back to local storage seamlessly.");
         }
 
-        // Submit Data to Firestore or LocalStorage (★ 양방향 전송 보완 설계)
         window.submitStudentReport = async function() {
             const name = document.getElementById('student-name').value.trim();
             const classInfo = document.getElementById('student-class').value.trim();
             const region = document.getElementById('report-region-name').value.trim();
             
-            // ★ 수정된 주관식 서술 입력 데이터 수집기
             const hypothesis = document.getElementById('report-hypothesis').value.trim();
             const analysis = document.getElementById('report-self-analysis').value.trim();
             const solution = document.getElementById('report-solution').value.trim();
@@ -601,7 +599,6 @@
                 return;
             }
 
-            // Grade Quizzes
             let score = 0;
             const q1 = document.querySelector('input[name="quiz1"]:checked');
             const q2 = document.querySelector('input[name="quiz2"]:checked');
@@ -616,12 +613,11 @@
             if (q2.value === "2") score += 33;
             if (q3.value === "4") score += 33;
 
-            // Generate precise document ID & fetch simulation params (Rule 1 Strict Path)
             const docId = `${classInfo}_${name}_${Date.now()}`;
             
             const record = {
                 id: Date.now(),
-                docId: docId, // 교사용 수정 시 바인딩용
+                docId: docId,
                 classInfo: classInfo,
                 name: name,
                 region: region || "미지정 이주 경로",
@@ -636,10 +632,10 @@
                 hypothesis: hypothesis,
                 analysis: analysis,
                 solution: solution,
-                aiFeedback: "" // Waiting for teacher to generate & edit
+                aiFeedback: "",
+                teacherFeedback: "" // ★ 교사 직접 피드백 변수 공간 확보
             };
 
-            // 만약 Firebase API 키가 정상적으로 탑재되어 있다면 Firestore로 제출 전송
             if (isFirebaseConfigured && db && user) {
                 try {
                     const publicDocRef = doc(db, 'artifacts', appId, 'public', 'data', 'migration_reports', docId);
@@ -654,7 +650,6 @@
                     showToast("❌", "클라우드 전송 실패. 로컬 저장소로 임시 저장되었습니다.");
                 }
             } else {
-                // 더미 키이거나 로컬 테스트 중일 때 LocalStorage 백업 모드 실행 (무중단 보장)
                 saveToLocalStorage(record);
                 showToast("🎓", `[로컬 백업 모드] 탐구 보고서가 정상 제출되었습니다! 성적: ${score}점`);
                 setTimeout(() => {
@@ -663,7 +658,6 @@
             }
         };
 
-        // Query Feedback from Firestore or LocalStorage (Rule 2)
         window.fetchMyFeedback = async function() {
             const searchClass = document.getElementById('search-class').value.trim();
             const searchName = document.getElementById('search-name').value.trim();
@@ -679,7 +673,6 @@
                     const querySnapshot = await getDocs(colRef);
                     
                     let foundDoc = null;
-                    // Fetch all and filter in memory to comply with Rule 2
                     querySnapshot.forEach((doc) => {
                         const data = doc.data();
                         if (data.classInfo === searchClass && data.name === searchName) {
@@ -691,7 +684,6 @@
                         renderFeedbackUI(foundDoc);
                         showToast("🔍", "서버 대장 매칭 기록을 성공적으로 찾았습니다!");
                     } else {
-                        // 클라우드 매칭이 없을 때 로컬 스토리지 한 차례 더 확인
                         fallbackLocalFetch(searchClass, searchName);
                     }
                 } catch (err) {
@@ -703,7 +695,6 @@
             }
         };
 
-        // Local Storage Helper functions
         function saveToLocalStorage(record) {
             let list = [];
             const cached = localStorage.getItem('local_migration_submits') || localStorage.getItem('migration_submits');
@@ -712,8 +703,6 @@
             }
             list.push(record);
             localStorage.setItem('local_migration_submits', JSON.stringify(list));
-            
-            // 교사용 대시보드 리스트와 공용 연계를 위한 브리지 캐시 병합
             localStorage.setItem('migration_submits', JSON.stringify(list));
         }
 
@@ -739,20 +728,26 @@
             document.getElementById('feedback-res-region').innerText = data.region;
             document.getElementById('feedback-res-score').innerText = data.score + "점 / 100점";
             
+            // AI 추천 세특 반영
             if (data.aiFeedback && data.aiFeedback.trim() !== "") {
                 document.getElementById('feedback-res-content').innerText = data.aiFeedback;
             } else {
                 document.getElementById('feedback-res-content').innerText = "선생님께서 보고서 검토 및 세특 피드백 문 작성을 대기 중입니다. 완료되면 여기에 바로 표시됩니다.";
             }
+
+            // 교사 개별 피드백 반영 (★ 신규 연동 코드)
+            if (data.teacherFeedback && data.teacherFeedback.trim() !== "") {
+                document.getElementById('feedback-res-teacher-content').innerText = data.teacherFeedback;
+            } else {
+                document.getElementById('feedback-res-teacher-content').innerText = "선생님이 직접 입력하신 전용 첨삭 코멘트가 아직 없습니다.";
+            }
         }
     </script>
 
-    <!-- Normal Script Block for Non-Firebase Interactive UI -->
     <script>
         let trendChart = null;
         let activeTab = 'simulator';
 
-        // Simulation parameters
         let simData = {
             years: [0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20],
             migrationTrend: []
@@ -793,28 +788,23 @@
             }
         }
 
-        // Calculation & Gravity-model engine
         function runMigrationSimulation() {
             const pushEco = parseFloat(document.getElementById('slider-push-eco').value);
             const pushWar = parseFloat(document.getElementById('slider-push-war').value);
             const pullWage = parseFloat(document.getElementById('slider-pull-wage').value);
             const pullSafety = parseFloat(document.getElementById('slider-pull-safety').value);
 
-            // Sync visual Labels
             document.getElementById('lbl-push-eco').innerText = pushEco;
             document.getElementById('lbl-push-war').innerText = pushWar;
             document.getElementById('lbl-pull-wage').innerText = pullWage;
             document.getElementById('lbl-pull-safety').innerText = pullSafety;
 
-            // Compute volume: Gravity model style interaction
             const pushTotal = pushEco * 1.2 + pushWar * 2.0;
             const pullTotal = pullWage * 1.5 + pullSafety * 1.1;
             const totalVolume = Math.round((pushTotal * pullTotal) * 0.18 + 500);
 
-            // Populate text metrics
             document.getElementById('metric-total-mig').innerText = totalVolume.toLocaleString() + ' 명';
 
-            // Distribution percentages
             let ecoMigrantShare = 50;
             let refugeeShare = 30;
             let familyShare = 20;
@@ -833,7 +823,6 @@
                 familyShare = 30;
             }
 
-            // Sync visual bars
             document.getElementById('bar-mig-eco').style.width = `${ecoMigrantShare}%`;
             document.getElementById('bar-mig-refugee').style.width = `${refugeeShare}%`;
             document.getElementById('bar-mig-family').style.width = `${familyShare}%`;
@@ -842,12 +831,10 @@
             document.getElementById('lbl-mig-refugee').innerText = `${refugeeShare}%`;
             document.getElementById('lbl-mig-family').innerText = `${familyShare}%`;
 
-            // Calculate acceptance & integration index
             let acceptIndex = Math.round(85 - (refugeeShare * 0.5) + (pullSafety * 0.2));
             acceptIndex = Math.max(15, Math.min(100, acceptIndex));
             document.getElementById('metric-accept-index').innerText = acceptIndex + '점';
 
-            // Classify dominant type
             let migTypeLabel = "일반 협력 이주";
             let analysisDescription = "";
 
@@ -865,7 +852,6 @@
             document.getElementById('metric-mig-type').innerText = migTypeLabel;
             document.getElementById('analysis-text').innerHTML = analysisDescription;
 
-            // Generate Projection over time for Chart.js
             simData.migrationTrend = [];
             simData.years.forEach((yr) => {
                 const noise = Math.sin(yr * 0.6) * (totalVolume * 0.08);
@@ -873,13 +859,11 @@
                 simData.migrationTrend.push(projectedVal);
             });
 
-            // Update Chart graphics
             if (trendChart) {
                 trendChart.data.datasets[0].data = simData.migrationTrend;
                 trendChart.update();
             }
 
-            // Sync objects to student temporary buffer
             simData.reportBuffer = {
                 pushStrength: Math.round(pushTotal),
                 pullStrength: Math.round(pullTotal),
@@ -950,7 +934,6 @@
             document.getElementById('report-self-analysis').value = '';
             document.getElementById('report-solution').value = '';
             
-            // Clear quiz selections
             document.querySelectorAll('input[name="quiz1"], input[name="quiz2"], input[name="quiz3"]').forEach(input => {
                 input.checked = false;
             });
