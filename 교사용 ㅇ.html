@@ -169,32 +169,48 @@
             </div>
             
             <div class="flex-1 overflow-hidden grid grid-cols-1 lg:grid-cols-2">
-                <!-- Left: Raw Student Report Drafts -->
-                <div class="p-6 overflow-y-auto space-y-4 text-xs border-r border-slate-800/80 bg-slate-900/50">
-                    <span class="text-[10px] text-slate-500 uppercase font-bold tracking-wider block">제출 원본</span>
+                <!-- Left: Raw Student Report Drafts (1, 2, 3, 4번 항목 전체 연계) -->
+                <div class="p-6 overflow-y-auto space-y-5 text-xs border-r border-slate-800/80 bg-slate-900/50">
+                    <span class="text-[10px] text-slate-500 uppercase font-bold tracking-wider block border-b border-slate-800 pb-1">📄 학생 제출 보고서 확인</span>
+                    
+                    <!-- 1번 항목 -->
                     <div>
-                        <h4 class="font-bold text-white border-l-2 border-indigo-500 pl-1.5 mb-1">1. Our World in Data 실측 분석 가설</h4>
-                        <p id="modal-field-hypothesis" class="bg-slate-950 p-3 rounded border border-slate-800 whitespace-pre-wrap text-slate-300"></p>
+                        <h4 class="font-bold text-white border-l-2 border-indigo-500 pl-1.5 mb-1.5 text-xs">1. 탐구 주제 및 지리 공간적 문제인식</h4>
+                        <p id="modal-field-hypothesis" class="bg-slate-950 p-3 rounded border border-slate-800 whitespace-pre-wrap text-slate-300 leading-relaxed"></p>
                     </div>
+                    
+                    <!-- 2번 항목 (시뮬레이터 변수 수치 연동 보완) -->
                     <div>
-                        <h4 class="font-bold text-white border-l-2 border-indigo-500 pl-1.5 mb-1">2. 설정 변수 수치</h4>
-                        <div class="grid grid-cols-3 gap-2 bg-slate-950 p-2.5 rounded border border-slate-800 text-slate-300">
-                            <div>이주 압박(Push): <strong id="modal-field-push" class="text-rose-400">-</strong></div>
-                            <div>유치 흡인(Pull): <strong id="modal-field-pull" class="text-teal-400">-</strong></div>
-                            <div>총이동량: <strong id="modal-field-total" class="text-indigo-400">-</strong></div>
+                        <h4 class="font-bold text-white border-l-2 border-indigo-500 pl-1.5 mb-1.5 text-xs">2. 배출-흡인 요인 설정 및 시뮬레이션 데이터</h4>
+                        <div class="grid grid-cols-2 gap-3 bg-slate-950 p-3.5 rounded border border-slate-800 text-slate-300">
+                            <div class="space-y-1">
+                                <div>• 배출 강도(Push): <strong id="modal-field-push" class="text-rose-400">-</strong></div>
+                                <div>• 흡인 강도(Pull): <strong id="modal-field-pull" class="text-emerald-400">-</strong></div>
+                            </div>
+                            <div class="space-y-1 border-l border-slate-800 pl-3">
+                                <div>• 추산 이주량: <strong id="modal-field-total" class="text-indigo-400">-</strong></div>
+                                <div>• 수용성 지수: <strong id="modal-field-accept" class="text-teal-400">-</strong></div>
+                            </div>
+                            <div class="col-span-2 pt-2 border-t border-slate-800 text-[10px] text-slate-400 leading-tight">
+                                📊 이주민 구성 유형: <span id="modal-field-migtype" class="text-indigo-300 font-bold">-</span>
+                            </div>
                         </div>
                     </div>
+                    
+                    <!-- 3번 항목 -->
                     <div>
-                        <h4 class="font-bold text-white border-l-2 border-indigo-500 pl-1.5 mb-1">3. 다문화 이주 원인 고찰</h4>
-                        <p id="modal-field-analysis" class="bg-slate-950 p-3 rounded border border-slate-800 whitespace-pre-wrap text-slate-300"></p>
+                        <h4 class="font-bold text-white border-l-2 border-indigo-500 pl-1.5 mb-1.5 text-xs">3. 데이터 분석 및 다문화 이동 원인 고찰</h4>
+                        <p id="modal-field-analysis" class="bg-slate-950 p-3 rounded border border-slate-800 whitespace-pre-wrap text-slate-300 leading-relaxed"></p>
                     </div>
+
+                    <!-- 4번 항목 (★ 공간 갈등 정책 제언 극대화 연동 수리) -->
                     <div>
-                        <h4 class="font-bold text-white border-l-2 border-indigo-500 pl-1.5 mb-1">4. 지리 공간적 극복 정책 제언</h4>
-                        <p id="modal-field-solution" class="bg-slate-950 p-3 rounded border border-slate-800 whitespace-pre-wrap text-slate-300"></p>
+                        <h4 class="font-bold text-white border-l-2 border-indigo-500 pl-1.5 mb-1.5 text-xs">4. 공간적 갈등 극복 방안 및 다문화 지리 제언</h4>
+                        <p id="modal-field-solution" class="bg-slate-950 p-3 rounded border border-slate-800 whitespace-pre-wrap text-slate-300 leading-relaxed"></p>
                     </div>
                 </div>
 
-                <!-- Right: AI Seuteuk Draft Generation Dashboard (Modified to editable TEXTAREA) -->
+                <!-- Right: AI Seuteuk Draft Generation Dashboard -->
                 <div class="p-6 overflow-y-auto bg-slate-950 flex flex-col justify-between space-y-4">
                     <div class="space-y-3">
                         <div class="flex justify-between items-center">
@@ -250,12 +266,12 @@
         import { getFirestore, collection, onSnapshot, doc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
         // =========================================================================
-        // ⚠️ [★ 여기에 붙여넣으세요 ★] 파이어베이스 API 설정 파트
+        // ⚠️ [★ 필수 입력 영역 ★] 파이어베이스 API 설정 파트
         // -------------------------------------------------------------------------
         // 파이어베이스 웹 콘솔에서 발급받은 'firebaseConfig' 설정 객체를 아래 괄호 안에 채워 넣으세요.
         // 설정이 완료되기 전이나 비어 있을 때는 로컬 오프라인 시뮬레이션 모드로 작동합니다.
         // =========================================================================
-  const firebaseConfig = {
+const firebaseConfig = {
   apiKey: "AIzaSyA5StiC90nMYf3UVdggXG_QtMAYEXRlvU8",
   authDomain: "hinicetomeetyou-6ef8b.firebaseapp.com",
   projectId: "hinicetomeetyou-6ef8b",
@@ -477,7 +493,7 @@
             showToast("⚙️", "GAS 웹앱 배포 주소가 브라우저 저장소에 정상 저장되었습니다.");
         }
 
-        // Mock preloaded data for teacher instant demonstration
+        // Mock preloaded data for teacher instant demonstration (4번 항목을 포함한 데모 데이터 개조)
         const mockDemoData = [
             {
                 id: 1101,
@@ -708,6 +724,7 @@
             });
         }
 
+        // 학생 세부 보고서 검토 (가설, 요약수치, 대안, 원인, 제언 연계 고도화)
         function viewStudentReportDetails(id) {
             const list = window.submissionsList || [];
             const sub = list.find((item, index) => item.id === id || index === id);
@@ -718,16 +735,17 @@
             document.getElementById('modal-student-info').innerText = `${sub.classInfo} ${sub.name} 학생`;
             document.getElementById('modal-student-title').innerText = `${sub.region} 국제이주 공간분석 검토`;
 
-            document.getElementById('modal-field-hypothesis').innerText = sub.hypothesis;
-            document.getElementById('modal-field-analysis').innerText = sub.analysis;
-            document.getElementById('modal-field-solution').innerText = sub.solution;
+            // 가설(1번) & 원인(3번) & 정책 제언(4번)
+            document.getElementById('modal-field-hypothesis').innerText = sub.hypothesis || "미제출";
+            document.getElementById('modal-field-analysis').innerText = sub.analysis || "미제출";
+            document.getElementById('modal-field-solution').innerText = sub.solution || "미제출";
 
+            // 시뮬레이터 수치 데이터 요약(2번)
             document.getElementById('modal-field-push').innerText = sub.pushEco || sub.pushStrength || 50;
             document.getElementById('modal-field-pull').innerText = sub.pullWage || sub.pullSafety || sub.pullStrength || 50;
             document.getElementById('modal-field-total').innerText = (sub.totalVolume || 0).toLocaleString() + ' 명';
-
-            const rate = (((sub.pushEco || sub.pushStrength || 50) - (sub.pullWage || sub.pullSafety || sub.pullStrength || 50)) / 10).toFixed(1);
-            document.getElementById('modal-field-rate').innerText = rate;
+            document.getElementById('modal-field-accept').innerText = (sub.acceptIndex || 0) + '점';
+            document.getElementById('modal-field-migtype').innerText = sub.migType || "미확인";
 
             // Load feedback if already saved, or show placeholder
             if (sub.aiFeedback && sub.aiFeedback.trim() !== "") {
@@ -864,14 +882,19 @@
                 showToast("⚠️", "데이터 없음");
                 return;
             }
-            let csv = "번호,학년반,이름,지역,Push,Pull,규모,점수,이주유형,수용성지수,피드백\n";
+            let csv = "번호,학년반,이름,지역,Push,Pull,규모,점수,이주유형,수용성지수,가설(1번),분석(3번),제언(4번),피드백\n";
             list.forEach((i, idx) => {
-                csv += `${idx+1},"${i.classInfo}","${i.name}","${i.region}",${i.pushEco || i.pushStrength || 0},${i.pullWage || i.pullSafety || i.pullStrength || 0},${i.totalVolume || 0},${i.score},"${i.migType || ''}",${i.acceptIndex || 0},"${(i.aiFeedback||'').replace(/"/g, '""')}"\n`;
+                const cleanHypo = (i.hypothesis || '').replace(/"/g, '""');
+                const cleanAnalysis = (i.analysis || '').replace(/"/g, '""');
+                const cleanSolution = (i.solution || '').replace(/"/g, '""');
+                const cleanFeedback = (i.aiFeedback || '').replace(/"/g, '""');
+                
+                csv += `${idx+1},"${i.classInfo}","${i.name}","${i.region}",${i.pushEco || 0},${i.pullWage || i.pullSafety || 0},${i.totalVolume || 0},${i.score},"${i.migType || ''}",${i.acceptIndex || 0},"${cleanHypo}","${cleanAnalysis}","${cleanSolution}","${cleanFeedback}"\n`;
             });
             const blob = new Blob(["\uFEFF" + csv], { type: "text/csv;charset=utf-8;" });
             const link = document.createElement("a");
             link.href = URL.createObjectURL(blob);
-            link.download = `탐구_${new Date().toLocaleDateString()}.csv`;
+            link.download = `탐구_교사전용_${new Date().toLocaleDateString()}.csv`;
             link.click();
             showToast("📥", "CSV 다운로드 완료");
         }
